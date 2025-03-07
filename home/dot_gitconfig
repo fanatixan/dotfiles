@@ -1,0 +1,27 @@
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+[commit]
+	gpgsign = true
+[user]
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHlr3NBIFhX1/GtnLT9QQtL+8fIvBSvSzEoHf3LMR2Li
+	name = Attila-Fejer
+	email = attila@fejer.io
+[merge]
+	conflictstyle = diff3
+[core]
+	editor = vim
+	autocrlf = input
+[submodule]
+	recurse = true
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+
+[include]
+	path = ~/project/.gitconfig
+
+[rebase]
+	updateRefs = true

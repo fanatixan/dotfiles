@@ -1,0 +1,22 @@
+Host rpi-k3s-master.local
+  IdentityFile ~/.ssh/rpi-k3s/master.pub
+  IdentitiesOnly yes
+
+Host rpi-k3s-worker-1.local
+  IdentityFile ~/.ssh/rpi-k3s/worker-1.pub
+  IdentitiesOnly yes
+
+Host rpi-k3s-worker-2.local
+  IdentityFile ~/.ssh/rpi-k3s/worker-2.pub
+  IdentitiesOnly yes
+
+Host rpi-k3s-worker-3.local
+  IdentityFile ~/.ssh/rpi-k3s/worker-3.pub
+  IdentitiesOnly yes
+
+Host rpi-k3s-worker-4.local
+  IdentityFile ~/.ssh/rpi-k3s/worker-4.pub
+  IdentitiesOnly yes
+
+Host *
+  IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"

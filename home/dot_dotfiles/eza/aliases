@@ -1,0 +1,2 @@
+alias ls="eza --icons=always"
+alias ll="eza --icons=always -alF --git --git-repos-no-status --time-style=long-iso"

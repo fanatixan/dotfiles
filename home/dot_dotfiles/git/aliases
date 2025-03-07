@@ -1,0 +1,7 @@
+alias gco="git checkout"
+alias gc="git commit"
+alias gca="git commit -a"
+alias gac="git add . && git commit"
+alias gm="git merge"
+alias gs="git status"
+alias gl="git log --oneline"

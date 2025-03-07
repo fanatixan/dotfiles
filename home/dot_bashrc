@@ -1,0 +1,5 @@
+shopt -s nullglob
+
+source $HOME/.shellrc
+
+source_all_dotfiles rc.bash

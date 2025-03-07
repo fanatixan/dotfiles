@@ -1,0 +1,1 @@
+. <(asdf completion bash)
