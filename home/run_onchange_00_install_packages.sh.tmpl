@@ -12,8 +12,10 @@ brew {{ . | quote }}
 {{ range .packages.mac.casks -}}
 cask {{ . | quote }}
 {{ end -}}
+{{- if .physical_computer }}
 {{ range .packages.mac.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
+{{ end -}}
 {{ end -}}
 {{ end -}}
 EOF
