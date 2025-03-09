@@ -1,5 +1,7 @@
 {{- if lookPath "zsh" }}
 #!/usr/bin/env bash
 
-test -f $ZSH/oh-my-zsh.sh || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+if [ -f $ZSH/oh-my-zsh.sh ]; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 {{ end -}}
