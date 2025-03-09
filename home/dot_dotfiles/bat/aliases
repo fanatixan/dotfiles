@@ -1,1 +1,5 @@
-alias cat="bat"
+if command -v batcat; then
+  alias cat="batcat"
+else if command -v bat; then
+  alias cat="bat"
+fi
