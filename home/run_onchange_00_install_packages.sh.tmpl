@@ -21,8 +21,9 @@ EOF
 {{- else if lookPath "apt" }}
 # Debian/Ubuntu
 sudo apt update
+sudo apt install -y \
 {{ range .packages.universal -}}
-sudo apt install -y {{ . | quote }}
+{{ . | quote }} \
 {{ end -}}
 
 {{- else if lookPath "dnf" }}
