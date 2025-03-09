@@ -5,15 +5,14 @@ brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.universal -}}
 brew {{ . | quote }}
 {{ end -}}
-{{- if eq .chezmoi.os "darwin" }}
-{{ range .packages.mac.brews -}}
+{{ range .packages.brew.brews -}}
 brew {{ . | quote }}
 {{ end -}}
-{{ range .packages.mac.casks -}}
+{{- if (eq .chezmoi.os "darwin") and (.physical_computer) }}
+{{ range .packages.brew.casks -}}
 cask {{ . | quote }}
 {{ end -}}
-{{- if .physical_computer }}
-{{ range .packages.mac.appstore -}}
+{{ range .packages.brew.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
 {{ end -}}

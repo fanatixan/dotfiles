@@ -14,7 +14,7 @@ packages:
     - tldr              # simpler man pages
   apk:                  # Alpine
     - fd                # simpler find
-  mac:
+  brew:
     brews:
       - tlrc            # simpler man pages
       - fd              # simpler find
