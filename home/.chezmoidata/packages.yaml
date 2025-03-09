@@ -6,13 +6,13 @@ packages:
     - eza               # better ls
     - curl
     - wget
-  apt:
+  apt:                  # debian/ubuntu
     - fd-find           # simpler find
     - tldr              # simpler man pages
-  dnf:
+  dnf:                  # RedHat/Fedora
     - rust-fd-find      # simpler find
     - tldr              # simpler man pages
-  apk:
+  apk:                  # Alpine
     - fd                # simpler find
   mac:
     brews:

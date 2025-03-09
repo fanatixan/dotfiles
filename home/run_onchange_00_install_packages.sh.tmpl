@@ -36,7 +36,7 @@ sudo dnf install -y \
 {{ range .packages.universal -}}
   {{ . | quote }} \
 {{ end -}}
-{{ range .packages.apt -}}
+{{ range .packages.dnf -}}
   {{ . | quote }} \
 {{ end -}}
 
@@ -47,7 +47,7 @@ sudo apk add \
 {{ range .packages.universal -}}
   {{ . | quote }} \
 {{ end -}}
-{{ range .packages.apt -}}
+{{ range .packages.apk -}}
   {{ . | quote }} \
 {{ end -}}
 
