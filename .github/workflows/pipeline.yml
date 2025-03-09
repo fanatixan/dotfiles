@@ -6,9 +6,15 @@ permissions:
   pull-requests: read
 
 on:
-  - push
-  - pull_request
-  - workflow_dispatch
+  push:
+    paths:
+      - home/**
+      - .chezmoiroot
+  pull_request:
+    paths:
+      - home/**
+      - .chezmoiroot
+  workflow_dispatch: {}
 
 jobs:
   verify-alpine-installation:
