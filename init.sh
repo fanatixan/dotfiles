@@ -4,7 +4,7 @@
 set -e
 
 physical_computer=false
-if [[ "$1" == "pc" ]] ; then
+if [[ "$target_env" == "pc" ]] ; then
   physical_computer=true
 fi
 
