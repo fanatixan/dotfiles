@@ -71,18 +71,11 @@ init_chezmoi_config() {
 EOF
 }
 
-debug() {
-  echo "########## Running ${@}"
-  ${@}
-}
-
-echo "\$ZSH:" $ZSH
-debug check_platform
-debug try_install_brew
-debug install_chezmoi
-# debug chezmoi init
-debug init_chezmoi_config
-debug chezmoi init fanatixan
-debug chezmoi doctor
-debug chezmoi apply
-debug chezmoi update
+check_platform
+try_install_brew
+install_chezmoi
+init_chezmoi_config
+chezmoi init fanatixan
+chezmoi doctor
+chezmoi apply
+chezmoi update
