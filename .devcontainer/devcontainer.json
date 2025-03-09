@@ -12,7 +12,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sh ./init-container.sh"
+	"postCreateCommand": "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)\""
 
 	// Configure tool-specific properties.
 	// "customizations": {},
