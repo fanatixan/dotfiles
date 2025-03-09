@@ -3,6 +3,11 @@
 # exit on error
 set -e
 
+physical_computer=false
+if [[ "$1" == "pc" ]] ; then
+  physical_computer=true
+fi
+
 halt() {
   >&2 echo "$1"
   exit 1
