@@ -36,7 +36,6 @@ packages:
       - android-platform-tools
       - alt-tab
       - windsurf
-      - kindle
       - appcleaner
       - audacity
       - bias-fx
@@ -99,3 +98,5 @@ packages:
         id: 1569813296
       - name: AdGuard for Safari
         id: 1440147259
+      - name: Amazon Kindle
+        id: 302584613
