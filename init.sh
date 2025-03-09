@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # exit on error
 set -e
 
 physical_computer=false
-if [[ "$target_env" == "pc" ]] ; then
+if [ "$target_env" = "pc" ] ; then
   physical_computer=true
 fi
 
@@ -28,21 +28,20 @@ platform_type() {
 
 check_platform() {
   platform=$(platform_type)
-  if [[ "$platform" != "Mac" && "$platform" != "Linux" ]] ; then
+  if [ "$platform" != "Mac" ] && [ "$platform" != "Linux" ] ; then
     halt "Unsupported platform: ${platform}"
   fi  
 }
 
-install_if_not_available() {
-  app_name=$1
-  install_command="${@:2}"
-  if ! command -v $app_name; then
-    $install_command
-  fi
+brew_installed() {
+  command -v brew &> /dev/null
 }
 
 try_install_brew() {
-  install_if_not_available brew /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  if ! brew_installed; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || \
+    echo "Failed to install Homebrew, going on"
+  fi
 }
 
 install_chezmoi_binary() {
@@ -53,7 +52,7 @@ install_chezmoi_binary() {
 }
 
 install_chezmoi() {
-  if command -v brew; then
+  if brew_installed; then
     brew install chezmoi
   else
     install_chezmoi_binary
