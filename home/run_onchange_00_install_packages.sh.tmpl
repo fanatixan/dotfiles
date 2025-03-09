@@ -18,21 +18,21 @@ mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
 EOF
 
-{{- if lookPath "apt" }}
+{{- else if lookPath "apt" }}
 # Debian/Ubuntu
 apt update
 {{ range .packages.universal -}}
 apt install {{ . | quote }}
 {{ end -}}
 
-{{- if lookPath "dnf" }}
+{{- else if lookPath "dnf" }}
 # Fedora/RHEL
 dnf check-update
 {{ range .packages.universal -}}
 dnf install {{ . | quote }}
 {{ end -}}
 
-{{- if lookPath "apk" }}
+{{- else if lookPath "apk" }}
 # Alpine
 apk update
 {{ range .packages.universal -}}
