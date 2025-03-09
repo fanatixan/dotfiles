@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-{{- if eq .chezmoi.os "darwin" }}
+{{- if lookPath "brew" }}
 brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.universal -}}
 brew {{ . | quote }}
 {{ end -}}
+{{- if eq .chezmoi.os "darwin" }}
 {{ range .packages.mac.brews -}}
 brew {{ . | quote }}
 {{ end -}}
@@ -14,5 +15,30 @@ cask {{ . | quote }}
 {{ range .packages.mac.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
+{{ end -}}
 EOF
+
+{{- if lookPath "apt" }}
+# Debian/Ubuntu
+apt update
+{{ range .packages.universal -}}
+apt install {{ . | quote }}
+{{ end -}}
+
+{{- if lookPath "dnf" }}
+# Fedora/RHEL
+dnf check-update
+{{ range .packages.universal -}}
+dnf install {{ . | quote }}
+{{ end -}}
+
+{{- if lookPath "apk" }}
+# Alpine
+apk update
+{{ range .packages.universal -}}
+apk add {{ . | quote }}
+{{ end -}}
+{{ else -}}
+echo "No package manager found"
+exit 1
 {{ end -}}
