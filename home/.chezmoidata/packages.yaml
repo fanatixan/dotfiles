@@ -1,0 +1,93 @@
+packages:
+  universal:
+    - bat    # better cat
+    - tig
+    - tmux
+    - eza    # better ls
+    - tlrc   # simpler man pages
+    - fd     # simpler find
+    - curl
+    - wget
+  mac:
+    brews:
+      - gpg
+      - gawk
+      - gh
+      - htop
+      - asdf
+      - maven
+      - gradle
+      - scrcpy          # mirror android screen
+      - act             # run github actions locally
+      - netlify-cli
+      - cookiecutter
+      - mas             # install Mac Appstore apps from the cli
+    casks:
+      - 1password@beta
+      - 1password-cli
+      - android-platform-tools
+      - alt-tab
+      - windsurf
+      - kindle
+      - appcleaner
+      - audacity
+      - bias-fx
+      - busycal
+      - camo-studio
+      - capcut
+      - cheatsheet
+      - clocker
+      - docker
+      - gimp
+      - garmin-basecamp
+      - garmin-express
+      - gather
+      - google-chrome
+      - google-drive
+      - grammarly-desktop
+      - guitar-pro
+      - hiddenbar
+      - inkscape
+      - jetbrains-toolbox
+      - karabiner-elements
+      - lightburn
+      - mac-mouse-fix
+      - meetingbar
+      - mimestream
+      - miro
+      - nordvpn
+      - obsidian
+      - raycast
+      - reader
+      - shottr
+      - slack
+      - sound-control
+      - todoist
+      - visual-studio-code
+      - warp
+      - calibre
+      - iterm2
+      - excalidrawz
+      - logitech-g-hub
+      - devpod
+      - microsoft-office
+      - font-inconsolata
+      - font-inconsolata-nerd-font
+      - font-fira-code-nerd-font
+    appstore:
+      - name: Amphetamine
+        id: 937984704
+      - name: PastePal
+        id: 1503446680
+      - name: DigiDoc 4
+        id: 1370791134
+      - name: Web eID
+        id: 1576665083
+      - name: Numbers
+        id: 409203825
+      - name: Grammarly for Safari
+        id: 1462114288
+      - name: 1Password for Safari
+        id: 1569813296
+      - name: AdGuard for Safari
+        id: 1440147259
