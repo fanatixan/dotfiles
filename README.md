@@ -32,7 +32,7 @@ The solution relies on [`chezmoi`](https://www.chezmoi.io/).
   - `tmux`
   - `asdf`
   - Aliases for installed packages
-- Install [packages](#packages) with `brew`, `apt`, `dnf`, or `apk` (whichever is available)
+- Install [packages](#installed-packages) with `brew`, `apt`, `dnf`, or `apk` (whichever is available)
 - For MacOs:
   - Configure daily autoupdate for Homebrew
   - Enable `sudo` with Touch ID
@@ -89,7 +89,7 @@ Currently two types of files are supported:
 - `.zsh` for ZSH
   Example: [home/dot_dotfiles/_zsh/_20_p10k/rc.zsh](home/dot_dotfiles/_zsh/_20_p10k/rc.zsh)
 - `.sh` for both bash and ZSH
-  Example: [home/dot_dotfiles/_zz_asdf/rc.sh](home/dot_dotfiles/_zz_asdf/rc.sh)
+  Example: [home/dot_dotfiles/zz_asdf/rc.sh](home/dot_dotfiles/zz_asdf/rc.sh)
 
 Files are loaded in the following order:
 
