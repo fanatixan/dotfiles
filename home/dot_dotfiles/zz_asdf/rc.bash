@@ -1,3 +1,3 @@
-if [ which asdf ]; then
+if command -v asdf; then
   . <(asdf completion bash)
 fi
