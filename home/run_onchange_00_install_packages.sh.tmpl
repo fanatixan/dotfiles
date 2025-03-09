@@ -22,7 +22,7 @@ EOF
 # Debian/Ubuntu
 sudo apt update
 {{ range .packages.universal -}}
-sudo apt instal -y {{ . | quote }}
+sudo apt install -y {{ . | quote }}
 {{ end -}}
 
 {{- else if lookPath "dnf" }}
