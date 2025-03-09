@@ -42,8 +42,8 @@ sudo dnf install -y \
 
 {{- else if lookPath "apk" }}
 # Alpine
-sudo sudo apk update
-sudo apk add -y  \
+sudo apk update
+sudo apk add \
 {{ range .packages.universal -}}
   {{ . | quote }} \
 {{ end -}}
