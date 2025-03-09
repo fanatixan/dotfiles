@@ -1,4 +1,3 @@
 #!/usr/bin/env sh
 
-export target_env=container
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init.sh)"
+sh -c "target_env=container $(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init.sh)"
