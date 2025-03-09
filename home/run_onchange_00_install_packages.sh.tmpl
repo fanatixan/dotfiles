@@ -23,22 +23,34 @@ EOF
 sudo apt update
 sudo apt install -y \
 {{ range .packages.universal -}}
-{{ . | quote }} \
+  {{ . | quote }} \
+{{ end -}}
+{{ range .packages.apt -}}
+  {{ . | quote }} \
 {{ end -}}
 
 {{- else if lookPath "dnf" }}
 # Fedora/RHEL
 sudo dnf check-update
+sudo dnf install -y \
 {{ range .packages.universal -}}
-sudo dnf install -y {{ . | quote }}
+  {{ . | quote }} \
+{{ end -}}
+{{ range .packages.apt -}}
+  {{ . | quote }} \
 {{ end -}}
 
 {{- else if lookPath "apk" }}
 # Alpine
 sudo sudo apk update
+sudo apk add -y  \
 {{ range .packages.universal -}}
-sudo apk add -y {{ . | quote }}
+  {{ . | quote }} \
 {{ end -}}
+{{ range .packages.apt -}}
+  {{ . | quote }} \
+{{ end -}}
+
 {{ else -}}
 echo "No package manager found"
 exit 1

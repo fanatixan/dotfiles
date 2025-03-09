@@ -1,15 +1,23 @@
 packages:
   universal:
-    - bat    # better cat
+    - bat               # better cat
     - tig
     - tmux
-    - eza    # better ls
-    - tlrc   # simpler man pages
-    - fd     # simpler find
+    - eza               # better ls
     - curl
     - wget
+  apt:
+    - fd-find           # simpler find
+    - tldr              # simpler man pages
+  dnf:
+    - rust-fd-find      # simpler find
+    - tldr              # simpler man pages
+  apk:
+    - fd                # simpler find
   mac:
     brews:
+      - tlrc            # simpler man pages
+      - fd              # simpler find
       - gpg
       - gawk
       - gh
