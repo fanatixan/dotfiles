@@ -52,11 +52,7 @@ install_chezmoi_binary() {
 }
 
 install_chezmoi() {
-  if brew_installed; then
-    brew install chezmoi
-  else
-    install_chezmoi_binary
-  fi
+  brew install chezmoi || install_chezmoi_binary && export PATH=$PATH:$HOME/bin
 }
 
 init_chezmoi_config() {
