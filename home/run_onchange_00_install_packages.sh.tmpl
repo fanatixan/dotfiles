@@ -8,7 +8,7 @@ brew {{ . | quote }}
 {{ range .packages.brew.brews -}}
 brew {{ . | quote }}
 {{ end -}}
-{{- if (eq .chezmoi.os "darwin") and (.physical_computer) }}
+{{- if and (eq .chezmoi.os "darwin") (.physical_computer) }}
 {{ range .packages.brew.casks -}}
 cask {{ . | quote }}
 {{ end -}}
