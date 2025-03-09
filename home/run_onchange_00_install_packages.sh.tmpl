@@ -22,19 +22,19 @@ EOF
 # Debian/Ubuntu
 apt update
 {{ range .packages.universal -}}
-apt install {{ . | quote }}
+sudo apt install {{ . | quote }}
 {{ end -}}
 
 {{- else if lookPath "dnf" }}
 # Fedora/RHEL
 dnf check-update
 {{ range .packages.universal -}}
-dnf install {{ . | quote }}
+sudo dnf install {{ . | quote }}
 {{ end -}}
 
 {{- else if lookPath "apk" }}
 # Alpine
-apk update
+sudo apk update
 {{ range .packages.universal -}}
 apk add {{ . | quote }}
 {{ end -}}
