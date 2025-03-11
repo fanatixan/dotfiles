@@ -91,11 +91,17 @@ Currently two types of files are supported:
 - `.sh` for both bash and ZSH
   Example: [home/dot_dotfiles/zz_asdf/rc.sh](home/dot_dotfiles/zz_asdf/rc.sh)
 
+`rc` files might have a `before_` or `after_` prefix to control the order of execution.
+
 Files are loaded in the following order:
 
-1. `rc.sh` files
-2. `alias` files
-3. Shell specific `rc.bash`/`rc.zsh` files
+1. `before_rc.sh` files
+2. Shell specific `before_rc.bash`/`before_rc.zsh` files
+3. `rc.sh` files
+4. Shell specific `rc.bash`/`rc.zsh` files
+5. `after_rc.sh` files
+6. Shell specific `after_rc.bash`/`after_rc.zsh` files
+7. `alias` files
 
 Within a category, files are loaded in alphabetical order based on their full path.
 

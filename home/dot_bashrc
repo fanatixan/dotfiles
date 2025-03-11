@@ -2,4 +2,10 @@ shopt -s nullglob
 
 source $HOME/.shellrc
 
+source_all_dotfiles before_rc.sh
+source_all_dotfiles before_rc.bash
+source_all_dotfiles rc.sh
 source_all_dotfiles rc.bash
+source_all_dotfiles after_rc.sh
+source_all_dotfiles after_rc.bash
+source_all_dotfiles aliases

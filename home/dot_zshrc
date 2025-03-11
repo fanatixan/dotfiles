@@ -2,4 +2,10 @@ setopt CSH_NULL_GLOB
 
 source $HOME/.shellrc
 
+source_all_dotfiles before_rc.sh
+source_all_dotfiles before_rc.zsh
+source_all_dotfiles rc.sh
 source_all_dotfiles rc.zsh
+source_all_dotfiles after_rc.sh
+source_all_dotfiles after_rc.zsh
+source_all_dotfiles aliases

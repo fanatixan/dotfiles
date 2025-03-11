@@ -9,6 +9,3 @@ source_all_dotfiles() {
     source $f
   done  
 }
-
-source_all_dotfiles rc.sh
-source_all_dotfiles aliases
