@@ -134,3 +134,11 @@ packages:
 - `apk`
 
 If none of them are available, the script will exit with an error.
+
+### Package Manager Search Pages
+
+- [Homebrew](https://formulae.brew.sh/)
+- [apt (Debian/Ubuntu)](https://packages.ubuntu.com/)
+- [dnf (Fedora/RHEL)](https://packages.fedoraproject.org/)
+- [apk (Alpine)](https://pkgs.alpinelinux.org/)
+- [General Linux](https://pkgs.org/)
