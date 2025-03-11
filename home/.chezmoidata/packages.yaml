@@ -6,6 +6,7 @@ packages:
     - eza               # better ls
     - curl
     - wget
+    - ripgrep           # better grep
   apt:                  # debian/ubuntu
     - fd-find           # simpler find
     - tldr              # simpler man pages
