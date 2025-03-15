@@ -43,7 +43,8 @@ brew_installed() {
 
 try_install_brew() {
   if ! brew_installed; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || \
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
+    brew doctor || \
     echo "Failed to install Homebrew, going on"
   fi
 }
