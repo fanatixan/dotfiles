@@ -8,7 +8,6 @@ packages:
     - curl
     - wget
     - ripgrep           # better grep
-    - asdf
     - fzf
   linux:
     commands:
@@ -36,6 +35,7 @@ packages:
       - yq              # yaml, json, and csv processor
       - httpie
       - zoxide
+      - asdf
     casks:
       - 1password@beta
       - 1password-cli
