@@ -1,5 +1,6 @@
 packages:
   universal:
+    - git
     - bat               # better cat
     - tig
     - tmux
@@ -7,6 +8,7 @@ packages:
     - curl
     - wget
     - ripgrep           # better grep
+    - asdf
   apt:                  # debian/ubuntu
     - fd-find           # simpler find
     - tldr              # simpler man pages
@@ -20,7 +22,6 @@ packages:
       - gawk
       - gh
       - htop
-      - asdf
       - maven
       - gradle
       - scrcpy          # mirror android screen
