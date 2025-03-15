@@ -11,6 +11,7 @@ packages:
     - fzf
   linux:
     commands: []
+    cargo: []
     apt:                  # debian/ubuntu
       - fd-find           # simpler find
       - tldr              # simpler man pages

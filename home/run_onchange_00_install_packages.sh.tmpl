@@ -49,4 +49,12 @@ exit 1
 {{ range .packages.linux.commands -}}
   {{ . | quote }}
 {{ end -}}
+
+{{- if lookPath "cargo" }}
+cargo install \
+{{ range .packages.linux.cargo -}}
+  {{ . | quote }} \
+{{ end -}}
+
+{{ end -}}
 {{ end -}}

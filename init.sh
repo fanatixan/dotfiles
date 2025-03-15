@@ -33,14 +33,29 @@ check_platform() {
   fi  
 }
 
+is_installed() {
+  command -v $1 &> /dev/null
+}
+
 brew_installed() {
-  command -v brew &> /dev/null
+  is_installed brew
 }
 
 try_install_brew() {
   if ! brew_installed; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || \
     echo "Failed to install Homebrew, going on"
+  fi
+}
+
+cargo_installed() {
+  is_installed cargo
+}
+
+try_install_cargo() {
+  if ! cargo_installed; then
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    echo "Failed to install cargo, going on"
   fi
 }
 
@@ -68,6 +83,7 @@ EOF
 
 check_platform
 try_install_brew
+try_install_cargo
 install_chezmoi
 init_chezmoi_config
 chezmoi init fanatixan
