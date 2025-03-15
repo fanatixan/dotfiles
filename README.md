@@ -13,7 +13,6 @@ The supported platforms are:
 - MacOS
 - Ubuntu/Debian
 - Alpine
-- Fedora/RHEL (untested)
 
 The solution relies on [`chezmoi`](https://www.chezmoi.io/).
 
@@ -32,7 +31,7 @@ The solution relies on [`chezmoi`](https://www.chezmoi.io/).
   - `tmux`
   - `asdf`
   - Aliases for installed packages
-- Install [packages](#installed-packages) with `brew`, `apt`, `dnf`, or `apk` (whichever is available)
+- Install [packages](#installed-packages) with `brew`, `apt`, or `apk` (whichever is available)
 - For MacOs:
   - Configure daily autoupdate for Homebrew
   - Enable `sudo` with Touch ID
@@ -118,8 +117,6 @@ packages:
     - bat
   apt:              # packages installed with apt
     - fd-find
-  dnf:              # packages installed with dnf
-    - rust-fd-find
   apk:              # packages installed with apk
     - fd
   brew:             # packages installed with brew
@@ -136,7 +133,6 @@ packages:
 
 - `brew`
 - `apt`
-- `dnf`
 - `apk`
 
 If none of them are available, the script will exit with an error.
@@ -145,6 +141,5 @@ If none of them are available, the script will exit with an error.
 
 - [Homebrew](https://formulae.brew.sh/)
 - [apt (Debian/Ubuntu)](https://packages.ubuntu.com/)
-- [dnf (Fedora/RHEL)](https://packages.fedoraproject.org/)
 - [apk (Alpine)](https://pkgs.alpinelinux.org/)
 - [General Linux](https://pkgs.org/)

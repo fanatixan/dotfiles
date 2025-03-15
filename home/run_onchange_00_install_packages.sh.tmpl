@@ -29,17 +29,6 @@ sudo apt install -y \
   {{ . | quote }} \
 {{ end -}}
 
-{{- else if lookPath "dnf" }}
-# Fedora/RHEL
-sudo dnf check-update
-sudo dnf install -y \
-{{ range .packages.universal -}}
-  {{ . | quote }} \
-{{ end -}}
-{{ range .packages.dnf -}}
-  {{ . | quote }} \
-{{ end -}}
-
 {{- else if lookPath "apk" }}
 # Alpine
 sudo apk update
