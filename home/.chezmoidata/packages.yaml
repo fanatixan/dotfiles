@@ -19,6 +19,7 @@ packages:
       - zoxide          # better cd
     apt:                # debian/ubuntu
       - fd-find         # simpler find
+      - thefuck         # corrects your previous command
     apk:                # Alpine
       - fd              # simpler find
   macos:
@@ -41,6 +42,7 @@ packages:
       - zoxide          # better cd
       - asdf
       - dust            # shows disk usage
+      - thefuck         # corrects your previous command
     casks:
       - 1password@beta
       - 1password-cli
