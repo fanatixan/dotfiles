@@ -9,6 +9,7 @@ packages:
     - wget
     - ripgrep           # better grep
     - fzf
+    - sd                # simpler sed
     - rustup            # rust, but the main point is cargo
   linux:
     commands: []
