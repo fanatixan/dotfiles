@@ -20,8 +20,10 @@ packages:
     apt:                # debian/ubuntu
       - fd-find         # simpler find
       - thefuck         # corrects your previous command
+      - btop
     apk:                # Alpine
       - fd              # simpler find
+      - btop
   macos:
     brews:
       - tlrc            # simpler man pages
@@ -29,7 +31,7 @@ packages:
       - gpg
       - gawk
       - gh
-      - htop
+      - bottom          # better top
       - maven
       - gradle
       - scrcpy          # mirror android screen
