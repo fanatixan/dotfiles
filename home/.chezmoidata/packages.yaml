@@ -10,8 +10,7 @@ packages:
     - ripgrep           # better grep
     - fzf
   linux:
-    commands:
-    - "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"  # zoxide - smarter cd
+    commands: []
     apt:                  # debian/ubuntu
       - fd-find           # simpler find
       - tldr              # simpler man pages
