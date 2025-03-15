@@ -52,7 +52,7 @@ exit 1
 
 {{- if lookPath "cargo" }}
 {{ range .packages.linux.cargo -}}
-  cargo instlal {{ . | quote }}
+  cargo install {{ . | quote }}
 {{ end -}}
 
 {{ end -}}
