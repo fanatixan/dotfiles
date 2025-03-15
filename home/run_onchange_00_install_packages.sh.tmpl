@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-{{- if lookPath "brew" }}
+{{- if eq .chezmoi.os "darwin" }}
 brew bundle --file=/dev/stdin <<EOF
 {{ range .packages.universal -}}
 brew {{ . | quote }}
 {{ end -}}
-{{ range .packages.brew.brews -}}
+{{ range .packages.macos.brews -}}
 brew {{ . | quote }}
 {{ end -}}
-{{- if and (eq .chezmoi.os "darwin") (.physical_computer) }}
-{{ range .packages.brew.casks -}}
+{{- if .physical_computer }}
+{{ range .packages.macos.casks -}}
 cask {{ . | quote }}
 {{ end -}}
-{{ range .packages.brew.appstore -}}
+{{ range .packages.macos.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
 {{ end -}}
 {{ end -}}
@@ -25,7 +25,7 @@ sudo apt install -y \
 {{ range .packages.universal -}}
   {{ . | quote }} \
 {{ end -}}
-{{ range .packages.apt -}}
+{{ range .packages.linux.apt -}}
   {{ . | quote }} \
 {{ end -}}
 
@@ -36,11 +36,17 @@ sudo apk add \
 {{ range .packages.universal -}}
   {{ . | quote }} \
 {{ end -}}
-{{ range .packages.apk -}}
+{{ range .packages.linux.apk -}}
   {{ . | quote }} \
 {{ end -}}
 
 {{ else -}}
 echo "No package manager found"
 exit 1
+{{ end -}}
+
+{{- if eq .chezmoi.os "linux" }}
+{{ range .packages.linux.commands -}}
+  {{ . | quote }}
+{{ end -}}
 {{ end -}}
