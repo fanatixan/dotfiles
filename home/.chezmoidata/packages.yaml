@@ -12,7 +12,8 @@ packages:
     - rustup            # rust, but the main point is cargo
   linux:
     commands: []
-    cargo: []
+    cargo:
+      - zellij
     apt:                # debian/ubuntu
       - fd-find         # simpler find
       - tldr            # simpler man pages
