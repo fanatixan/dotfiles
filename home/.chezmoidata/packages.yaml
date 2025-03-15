@@ -36,9 +36,9 @@ packages:
       - mas             # install Mac Appstore apps from the cli
       - yq              # yaml, json, and csv processor
       - httpie
-      - zoxide
+      - zoxide          # better cd
       - asdf
-      - dust
+      - dust            # shows disk usage
     casks:
       - 1password@beta
       - 1password-cli
