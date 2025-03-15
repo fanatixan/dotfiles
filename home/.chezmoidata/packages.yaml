@@ -30,6 +30,7 @@ packages:
       - cookiecutter
       - mas             # install Mac Appstore apps from the cli
       - yq              # yaml, json, and csv processor
+      - httpie
     casks:
       - 1password@beta
       - 1password-cli
