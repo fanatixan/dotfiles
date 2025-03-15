@@ -17,6 +17,7 @@ packages:
       - zellij
       - tlrc            # simpler man pages
       - zoxide          # better cd
+      - git-delta       # diff tool
     apt:                # debian/ubuntu
       - fd-find         # simpler find
       - thefuck         # corrects your previous command
@@ -43,6 +44,7 @@ packages:
       - asdf
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
+      - git-delta       # diff tool
     casks:
       - 1password@beta
       - 1password-cli
