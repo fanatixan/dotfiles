@@ -9,6 +9,7 @@ packages:
     - wget
     - ripgrep           # better grep
     - asdf
+    - fzf
   apt:                  # debian/ubuntu
     - fd-find           # simpler find
     - tldr              # simpler man pages
