@@ -89,6 +89,7 @@ packages:
       - font-inconsolata
       - font-inconsolata-nerd-font
       - font-fira-code-nerd-font
+      - stats
     appstore:
       - name: Amphetamine
         id: 937984704
