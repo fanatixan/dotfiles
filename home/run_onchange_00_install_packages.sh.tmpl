@@ -51,9 +51,8 @@ exit 1
 {{ end -}}
 
 {{- if lookPath "cargo" }}
-cargo install \
 {{ range .packages.linux.cargo -}}
-  {{ . | quote }} \
+  cargo instlal {{ . | quote }}
 {{ end -}}
 
 {{ end -}}
