@@ -38,6 +38,7 @@ packages:
       - httpie
       - zoxide
       - asdf
+      - dust
     casks:
       - 1password@beta
       - 1password-cli
