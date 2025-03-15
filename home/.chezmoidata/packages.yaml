@@ -3,7 +3,6 @@ packages:
     - git
     - bat               # better cat
     - tig
-    - tmux
     - eza               # better ls
     - curl
     - wget
@@ -45,6 +44,7 @@ packages:
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
       - git-delta       # diff tool
+      - zellij
     casks:
       - 1password@beta
       - 1password-cli
