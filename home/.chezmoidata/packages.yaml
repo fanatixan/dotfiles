@@ -11,7 +11,8 @@ packages:
     - asdf
     - fzf
   linux:
-    commands: []
+    commands:
+    - "curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh"  # zoxide - smarter cd
     apt:                  # debian/ubuntu
       - fd-find           # simpler find
       - tldr              # simpler man pages
@@ -34,6 +35,7 @@ packages:
       - mas             # install Mac Appstore apps from the cli
       - yq              # yaml, json, and csv processor
       - httpie
+      - zoxide
     casks:
       - 1password@beta
       - 1password-cli
