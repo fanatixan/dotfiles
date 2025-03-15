@@ -15,6 +15,7 @@ packages:
     cargo:
       - zellij
       - tlrc            # simpler man pages
+      - zoxide          # better cd
     apt:                # debian/ubuntu
       - fd-find         # simpler find
     apk:                # Alpine
