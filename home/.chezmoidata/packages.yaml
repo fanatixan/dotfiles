@@ -14,9 +14,9 @@ packages:
     commands: []
     cargo:
       - zellij
+      - tlrc            # simpler man pages
     apt:                # debian/ubuntu
       - fd-find         # simpler find
-      - tldr            # simpler man pages
     apk:                # Alpine
       - fd              # simpler find
   macos:
