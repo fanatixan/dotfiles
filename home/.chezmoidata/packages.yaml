@@ -19,7 +19,6 @@ packages:
       - git-delta       # diff tool
     apt:                # debian/ubuntu
       - fd-find         # simpler find
-      - thefuck         # corrects your previous command
       - btop
     apk:                # Alpine
       - fd              # simpler find
