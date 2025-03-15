@@ -48,17 +48,6 @@ try_install_brew() {
   fi
 }
 
-cargo_installed() {
-  is_installed cargo
-}
-
-try_install_cargo() {
-  if ! cargo_installed; then
-    curl https://sh.rustup.rs -sSf | sh -s -- -y
-    echo "Failed to install cargo, going on"
-  fi
-}
-
 install_chezmoi_binary() {
   sh -c "$(curl -fsLS get.chezmoi.io)" || \
   sh -c "$(wget -qO- get.chezmoi.io)" || \
@@ -83,7 +72,6 @@ EOF
 
 check_platform
 try_install_brew
-try_install_cargo
 install_chezmoi
 init_chezmoi_config
 chezmoi init fanatixan

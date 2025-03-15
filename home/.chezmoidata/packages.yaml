@@ -9,14 +9,15 @@ packages:
     - wget
     - ripgrep           # better grep
     - fzf
+    - rustup            # rust, but the main point is cargo
   linux:
     commands: []
     cargo: []
-    apt:                  # debian/ubuntu
-      - fd-find           # simpler find
-      - tldr              # simpler man pages
-    apk:                  # Alpine
-      - fd                # simpler find
+    apt:                # debian/ubuntu
+      - fd-find         # simpler find
+      - tldr            # simpler man pages
+    apk:                # Alpine
+      - fd              # simpler find
   macos:
     brews:
       - tlrc            # simpler man pages
