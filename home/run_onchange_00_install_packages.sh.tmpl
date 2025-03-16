@@ -34,7 +34,7 @@ brew bundle --file=/dev/stdin <<EOF
   {{- range .packages.macos.brews -}}
 brew {{ . | quote }}
   {{- end -}}
-{{- if $physical_computer -}}
+{{- if .physical_computer -}}
   {{- range .packages.macos.casks -}}
 cask {{ . | quote }}
   {{- end -}}
