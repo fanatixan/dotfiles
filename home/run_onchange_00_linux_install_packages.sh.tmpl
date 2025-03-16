@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 {{ $linux := eq .chezmoi.os "linux" -}}
-{{ $mac := eq .chezmoi.os "darwin" -}}
 
 {{ define "install" -}}
   {{ if and (lookPath "brew") (hasKey . "brew") -}}
@@ -19,7 +18,7 @@
   {{ end -}}
 {{ end -}}
 
-{{ if or $linux $mac -}}
+{{ if $linux -}}
   {{ range .packages.unixLike -}}
     {{ if eq "string" (printf "%T" .) -}}
       {{ template "install" (dict "name" . "brew" . "apt" . "apk" . "cargo" .) }}
@@ -27,8 +26,4 @@
       {{ template "install" . }}
     {{ end }}
   {{ end -}}
-{{ end -}}
-
-{{ if $mac -}}
-brew bundle --file=$HOME/.dotfiles/homebrew/Brewfile
 {{ end -}}

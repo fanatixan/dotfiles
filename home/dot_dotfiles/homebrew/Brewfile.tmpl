@@ -1,4 +1,11 @@
 {{ if eq .chezmoi.os "darwin" -}}
+  {{ range .packages.unixLike -}}
+    {{ if eq "string" (printf "%T" .) -}}
+brew {{ . | quote }}
+    {{ else if (hasKey . "brew") -}}
+brew {{ .brew | quote }}
+    {{ end }}
+  {{ end -}}
   {{- range .packages.macos.brews }}
 brew {{ . | quote }}
   {{- end }}
