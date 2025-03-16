@@ -1,5 +1,5 @@
 packages:
-  universal:
+  unixLike:
     - git
     - bat               # better cat
     - tig
@@ -9,28 +9,34 @@ packages:
     - ripgrep           # better grep
     - fzf
     - sd                # simpler sed
-    - rustup            # rust, but the main point is cargo
-  linux:
-    commands: []
-    cargo:
-      - zellij
-      - tlrc            # simpler man pages
-      - zoxide          # better cd
-      - git-delta       # diff tool
-    apt:                # debian/ubuntu
-      - fd-find         # simpler find
-      - btop
-    apk:                # Alpine
-      - fd              # simpler find
-      - btop
+    - rustup
+    - name: zellij      # terminal multiplexer
+      brew: zellij
+      apk: zellij
+      cargo: zellij
+    - name: tldr        # simpler man pages
+      brew: tlrc
+      cargo: tlrc
+    - name: zoxide      # better cd
+      brew: zoxide
+      apk: zoxide
+      cargo: zoxide
+    - name: delta       # diff tool
+      brew: git-delta
+      cargo: git-delta
+    - name: fd          # simpler find
+      brew: fd
+      apt: fd-find
+      apk: fd
+    - name: top-alternative
+      brew: bottom
+      apt: btop
+      apk: btop
   macos:
     brews:
-      - tlrc            # simpler man pages
-      - fd              # simpler find
       - gpg
       - gawk
       - gh
-      - bottom          # better top
       - maven
       - gradle
       - scrcpy          # mirror android screen
@@ -40,12 +46,9 @@ packages:
       - mas             # install Mac Appstore apps from the cli
       - yq              # yaml, json, and csv processor
       - httpie
-      - zoxide          # better cd
       - asdf
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
-      - git-delta       # diff tool
-      - zellij
     casks:
       - 1password@beta
       - 1password-cli

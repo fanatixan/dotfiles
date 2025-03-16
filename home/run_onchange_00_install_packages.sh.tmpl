@@ -1,59 +1,46 @@
 #!/usr/bin/env bash
 
-{{- if eq .chezmoi.os "darwin" }}
+{{ $linux := eq .chezmoi.os "linux" -}}
+{{ $mac := eq .chezmoi.os "darwin" -}}
+
+{{ define "install" -}}
+  {{ if and (lookPath "brew") (hasKey . "brew") -}}
+    brew install {{ .brew }}
+  {{ else if and (lookPath "apt") (hasKey . "apt") -}}
+    sudo apt install -y {{ .apt }}
+  {{ else if and (lookPath "apk") (hasKey . "apk") -}}
+    sudo apk add -y {{ .apt }}
+  {{ else if (hasKey . "linuxCommand") -}}
+    {{ .linuxCommand }}
+  {{ else if and (lookPath "cargo") (hasKey . "cargo") -}}
+    cargo install {{ .cargo }}
+  {{ else -}}
+    echo "Couldn't install {{ .name }}"
+  {{ end -}}
+{{ end -}}
+
+{{ if or $linux $mac -}}
+  {{ range .packages.unixLike -}}
+    {{ if eq "string" (printf "%T" .) -}}
+      {{ template "install" (dict "name" . "brew" . "apt" . "apk" . "cargo" .) }}
+    {{ else -}}
+      {{ template "install" . }}
+    {{ end }}
+  {{ end -}}
+{{ end -}}
+
+{{ if $mac -}}
 brew bundle --file=/dev/stdin <<EOF
-{{ range .packages.universal -}}
+  {{- range .packages.macos.brews -}}
 brew {{ . | quote }}
-{{ end -}}
-{{ range .packages.macos.brews -}}
-brew {{ . | quote }}
-{{ end -}}
-{{- if .physical_computer }}
-{{ range .packages.macos.casks -}}
+  {{- end -}}
+{{- if $physical_computer -}}
+  {{- range .packages.macos.casks -}}
 cask {{ . | quote }}
-{{ end -}}
-{{ range .packages.macos.appstore -}}
+  {{- end -}}
+  {{- range .packages.macos.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
-{{ end -}}
-{{ end -}}
+  {{- end -}}
+{{- end -}}
 EOF
-
-{{- else if lookPath "apt" }}
-# Debian/Ubuntu
-sudo apt update
-sudo apt install -y \
-{{ range .packages.universal -}}
-  {{ . | quote }} \
-{{ end -}}
-{{ range .packages.linux.apt -}}
-  {{ . | quote }} \
-{{ end -}}
-
-{{- else if lookPath "apk" }}
-# Alpine
-sudo apk update
-sudo apk add \
-{{ range .packages.universal -}}
-  {{ . | quote }} \
-{{ end -}}
-{{ range .packages.linux.apk -}}
-  {{ . | quote }} \
-{{ end -}}
-
-{{ else -}}
-echo "No package manager found"
-exit 1
-{{ end -}}
-
-{{- if eq .chezmoi.os "linux" }}
-{{ range .packages.linux.commands -}}
-  {{ . | quote }}
-{{ end -}}
-
-{{- if lookPath "cargo" }}
-{{ range .packages.linux.cargo -}}
-  cargo install {{ . | quote }}
-{{ end -}}
-
-{{ end -}}
 {{ end -}}
