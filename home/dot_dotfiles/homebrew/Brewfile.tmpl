@@ -1,5 +1,4 @@
 {{ if eq .chezmoi.os "darwin" -}}
-brew bundle --file=/dev/stdin <<EOF
   {{- range .packages.macos.brews }}
 brew {{ . | quote }}
   {{- end }}
@@ -11,5 +10,4 @@ cask {{ . | quote }}
 mas {{ .name | quote }}, id: {{ .id }}
   {{- end }}
 {{- end }}
-EOF
 {{- end }}
