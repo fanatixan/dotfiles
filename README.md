@@ -113,29 +113,45 @@ The file is structured as follows:
 
 ```yaml
 packages:
-  universal:        # packages installed on all platforms
-    - bat
-  apt:              # packages installed with apt
-    - fd-find
-  apk:              # packages installed with apk
-    - fd
-  brew:             # packages installed with brew
-    brews:          # brew formolae
-      - fd
-    casks:          # brew casks (only for MacOS on physical machines)
-      - 1password
-    appstore:       # apps installed with mas from the app store (only for MacOS on physical machines)
+  unixLike:                      # packages installed on all Unix-like systems
+    - git                        # if only the package name is provided, it is will be searhed in every supported package manager
+    - name: tldr                 # we can restrict the supported package managers
+      brew: tlrc        
+      cargo: tlrc
+    - name: fd                   # we can provide different names for different package managers
+      brew: fd
+      apt: fd-find
+      apk: fd
+    - name: top-alternative      # or even different packages
+      brew: bottom
+      apt: btop
+      apk: btop
+  macos:                         # packages installed only on MacOs
+    brews:                       # brew packages
+      - gpg
+    casks:                       # cask packages
+      - 1password@beta
+    appstore:                    # appstore packages
       - name: Amphetamine
         id: 937984704
+
 ```
 
-`chezmoi` tries to use package managers in the following order:
+The install script tries to use package managers in the following order:
 
 - `brew`
 - `apt`
 - `apk`
+- Linux script
+- `cargo`
 
-If none of them are available, the script will exit with an error.
+Since `cargo` not only installs but also compiles the packages, it is only used
+if the app is not installed yet. The `name` property is used to check if the package
+is installed.
+
+On Linux, every package is installed one-by-one.
+
+On MacOs, a `Brewfile` is created and installed with `brew bundle`.
 
 ### Package Manager Search Pages
 
