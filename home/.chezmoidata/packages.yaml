@@ -121,3 +121,5 @@ packages:
         id: 1440147259
       - name: Amazon Kindle
         id: 302584613
+      - name: Folder Tidy
+        id: 486626129
