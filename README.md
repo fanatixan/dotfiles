@@ -151,7 +151,8 @@ is installed.
 
 On Linux, every package is installed one-by-one.
 
-On MacOs, a `Brewfile` is created and installed with `brew bundle`.
+On MacOs, `brew bundle` is used to install the packages. No `Brewfile` is generated,
+the package list is passed as a heredoc.
 
 ### Package Manager Search Pages
 

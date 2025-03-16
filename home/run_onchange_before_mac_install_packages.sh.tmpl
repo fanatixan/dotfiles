@@ -1,4 +1,7 @@
-{{- if eq .chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+
+brew bundle --file=/dev/stdin <<EOF
 {{- range .packages.unixLike -}}
   {{- if eq "string" (printf "%T" .) -}}
 brew {{ . | quote }}
@@ -16,5 +19,6 @@ cask {{ . | quote }}
 {{- range .packages.macos.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
 {{ end }}
-{{- end -}}
-{{- end -}}
+{{- end }}
+EOF
+{{ end -}}
