@@ -36,5 +36,6 @@ jobs:
     runs-on: macos-latest
     steps:
       - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
+      - run: cat ~/.dotfiles/homebrew/Brewfile
       - run: test -f $HOME/.dotfiles/git/aliases
       - run: eza

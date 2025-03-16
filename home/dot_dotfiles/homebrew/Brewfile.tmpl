@@ -1,0 +1,15 @@
+{{ if $mac -}}
+brew bundle --file=/dev/stdin <<EOF
+  {{- range .packages.macos.brews -}}
+brew {{ . | quote }}
+  {{- end -}}
+{{- if .physical_computer -}}
+  {{- range .packages.macos.casks -}}
+cask {{ . | quote }}
+  {{- end -}}
+  {{- range .packages.macos.appstore -}}
+mas {{ .name | quote }}, id: {{ .id }}
+  {{- end -}}
+{{- end -}}
+EOF
+{{ end -}}

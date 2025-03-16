@@ -77,5 +77,5 @@ install_chezmoi
 init_chezmoi_config
 chezmoi init fanatixan
 chezmoi doctor
-chezmoi apply -v
+chezmoi apply
 chezmoi update
