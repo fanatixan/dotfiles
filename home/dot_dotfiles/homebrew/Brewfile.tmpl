@@ -1,20 +1,20 @@
-{{ if eq .chezmoi.os "darwin" -}}
-  {{ range .packages.unixLike -}}
-    {{ if eq "string" (printf "%T" .) -}}
+{{- if eq .chezmoi.os "darwin" -}}
+  {{- range .packages.unixLike -}}
+    {{- if eq "string" (printf "%T" .) -}}
 brew {{ . | quote }}
-    {{ else if (hasKey . "brew") -}}
+    {{- else if (hasKey . "brew") -}}
 brew {{ .brew | quote }}
-    {{ end }}
-  {{ end -}}
-  {{- range .packages.macos.brews }}
+    {{- end -}}
+  {{- end -}}
+  {{- range .packages.macos.brews -}}
 brew {{ . | quote }}
-  {{- end }}
-{{- if .physical_computer }}
-  {{- range .packages.macos.casks }}
+  {{- end -}}
+{{- if .physical_computer -}}
+  {{- range .packages.macos.casks -}}
 cask {{ . | quote }}
-  {{- end }}
-  {{- range .packages.macos.appstore }}
+  {{- end -}}
+  {{- range .packages.macos.appstore -}}
 mas {{ .name | quote }}, id: {{ .id }}
-  {{- end }}
-{{- end }}
-{{- end }}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
