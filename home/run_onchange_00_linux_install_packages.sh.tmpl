@@ -12,7 +12,7 @@
   {{ else if (hasKey . "linuxCommand") -}}
     {{ .linuxCommand }}
   {{ else if and (lookPath "cargo") (hasKey . "cargo") -}}
-    cargo install {{ .cargo }}
+    command -v {{ .name }} || cargo install {{ .cargo }}
   {{ else -}}
     echo "Couldn't install {{ .name }}"
   {{ end -}}
