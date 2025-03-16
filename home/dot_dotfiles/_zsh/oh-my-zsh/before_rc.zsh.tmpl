@@ -74,6 +74,24 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git github 1password docker vscode nvm pyenv mvn gradle asdf)
+plugins=(
+  git
+  fzf
+{{- if eq .chezmoi.os "darwin" }}
+  gh
+  1password
+  docker
+  vscode
+  mvn
+  gradle
+  asdf
+  npm
+  java
+  python
+  pip
+  httpie
+  thefuck
+{{ end -}}
+)
 
 source $ZSH/oh-my-zsh.sh
