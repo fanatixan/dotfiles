@@ -1,15 +1,15 @@
 {{ if eq .chezmoi.os "darwin" -}}
 brew bundle --file=/dev/stdin <<EOF
-  {{- range .packages.macos.brews -}}
+  {{- range .packages.macos.brews }}
 brew {{ . | quote }}
-  {{- end -}}
-{{- if .physical_computer -}}
-  {{- range .packages.macos.casks -}}
+  {{- end }}
+{{- if .physical_computer }}
+  {{- range .packages.macos.casks }}
 cask {{ . | quote }}
-  {{- end -}}
-  {{- range .packages.macos.appstore -}}
+  {{- end }}
+  {{- range .packages.macos.appstore }}
 mas {{ .name | quote }}, id: {{ .id }}
-  {{- end -}}
-{{- end -}}
+  {{- end }}
+{{- end }}
 EOF
-{{ end -}}
+{{- end }}
