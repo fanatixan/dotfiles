@@ -67,7 +67,7 @@ install_chezmoi() {
 
 init_chezmoi_config() {
   mkdir -p $HOME/.config/chezmoi
-  cat >> $HOME/.config/chezmoi/chezmoi.toml << EOF
+  cat > $HOME/.config/chezmoi/chezmoi.toml << EOF
 [onepassword]
   prompt = false
 [data]
