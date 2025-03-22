@@ -1,5 +1,5 @@
-if command -v btm; then
+if command -v btm 2>&1 >/dev/null; then
   alias top="btm"
-elif command -v btop; then
+elif command -v btop 2>&1 >/dev/null; then
   alias top="btop"
 fi

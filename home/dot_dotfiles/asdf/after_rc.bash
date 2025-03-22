@@ -1,3 +1,3 @@
-if command -v asdf; then
+if command -v asdf 2>&1 >/dev/null; then
   . <(asdf completion bash)
 fi

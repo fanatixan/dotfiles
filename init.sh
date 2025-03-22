@@ -34,7 +34,7 @@ check_platform() {
 }
 
 is_installed() {
-  command -v $1 &> /dev/null
+  command -v $1 2>&1 >/dev/null
 }
 
 brew_installed() {
