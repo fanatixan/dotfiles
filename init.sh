@@ -44,6 +44,11 @@ brew_installed() {
 try_install_brew() {
   if ! brew_installed; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
+    echo >> $HOME/.zshrc && \
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zshrc && \
+    echo >> $HOME/.bashrc && \
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.bashrc && \
+    eval "$(/opt/homebrew/bin/brew shellenv)" && \
     brew doctor || \
     echo "Failed to install Homebrew, going on"
   fi
