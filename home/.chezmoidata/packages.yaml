@@ -89,6 +89,7 @@ packages:
       - warp
       - calibre
       - iterm2
+      - itermai
       - excalidrawz
       - devpod
       - microsoft-office
