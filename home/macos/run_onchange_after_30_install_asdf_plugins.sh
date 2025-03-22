@@ -9,7 +9,8 @@ asdf plugin add java
 asdf install java $(java_version temurin-11)
 asdf install java $(java_version temurin-17)
 asdf install java $(java_version temurin-21)
-asdf set -u java $(java_version temurin-21)
+asdf install java $(java_version temurin-24)
+asdf set -u java $(java_version temurin-24)
 
 asdf plugin add nodejs
 asdf install nodejs latest:18
