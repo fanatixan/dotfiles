@@ -95,7 +95,7 @@ packages:
       - font-inconsolata
       - font-inconsolata-nerd-font
       - font-fira-code-nerd-font
-      - font-meslo-for-powerlevel10k
+      - font-meslo-lg-nerd-font
       - stats
       - zoom
     appstore:
