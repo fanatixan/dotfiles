@@ -1,11 +1,3 @@
 if [[ -z "${DOTFILES_FOLDER}" ]]; then
   DOTFILES_FOLDER=$HOME/.dotfiles
 fi
-
-source_all_dotfiles() {
-  filename=$1
-  for f in $DOTFILES_FOLDER/**/$filename
-  do
-    source $f
-  done  
-}

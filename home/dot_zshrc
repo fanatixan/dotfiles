@@ -2,6 +2,14 @@ setopt CSH_NULL_GLOB
 
 source $HOME/.shellrc
 
+source_all_dotfiles() {
+  filename=$1
+  for f in $DOTFILES_FOLDER/**/$filename(N)
+  do
+    source $f
+  done  
+}
+
 source_all_dotfiles before_rc.sh
 source_all_dotfiles before_rc.zsh
 source_all_dotfiles rc.sh
