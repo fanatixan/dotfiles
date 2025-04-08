@@ -119,3 +119,5 @@ packages:
         id: 302584613
       - name: Folder Tidy
         id: 486626129
+      - name: Xcode
+        id: 497799835
