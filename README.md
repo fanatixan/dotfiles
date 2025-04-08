@@ -70,7 +70,7 @@ Also, if a file's or folder's name starts with `dot_`, it will be replace with
 `.` in the user's home directory.
 
 The [`.shellrc`](home/dot_shellrc) contains the common configuration for both bash
-and ZSH to load for an interactive shell.
+and ZSH to load.
 
 Shell-specific `.bashrc` and `.zshrc` create a utility function to recursively source
 specifically named `.rc` files from the [`.dotfiles`](home/dot_dotfiles/) directory.
@@ -80,8 +80,10 @@ Currently two types of files are supported:
 
 - `rc` files containing general configuration.
   Example: [home/dot_dotfiles/_general/rc.sh](home/dot_dotfiles/_general/rc.sh)
-- `alias` files containing aliases for installed packages.
+- `aliases` files containing aliases for installed packages.
   Example: [home/dot_dotfiles/bat/aliases](home/dot_dotfiles/bat/aliases)
+- `paths` files containing path configuration.
+  Example: [home/dot_dotfiles/general/paths](home/dot_dotfiles/general/paths)
 
 `rc` files should have one of the following extensions:
 
@@ -96,13 +98,16 @@ Currently two types of files are supported:
 
 Files are loaded in the following order:
 
-1. `before_rc.sh` files
-2. Shell specific `before_rc.bash`/`before_rc.zsh` files
-3. `rc.sh` files
-4. Shell specific `rc.bash`/`rc.zsh` files
-5. `after_rc.sh` files
-6. Shell specific `after_rc.bash`/`after_rc.zsh` files
-7. `alias` files
+1. `paths` files
+2. `before_rc.sh` files
+3. Shell specific `before_rc.bash`/`before_rc.zsh` files
+4. `rc.sh` files
+5. Shell specific `rc.bash`/`rc.zsh` files
+6. `after_rc.sh` files
+7. Shell specific `after_rc.bash`/`after_rc.zsh` files
+8. `alias` files
+
+Note that for a non-interactive shell, only `paths` files are loaded.
 
 Within a category, files are loaded in alphabetical order based on their full path.
 
