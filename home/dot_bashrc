@@ -10,6 +10,8 @@ source_all_dotfiles() {
   done  
 }
 
+load_user_paths
+
 if is_interactive; then
   source_all_dotfiles before_rc.sh
   source_all_dotfiles before_rc.bash
