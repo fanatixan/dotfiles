@@ -70,7 +70,7 @@ Also, if a file's or folder's name starts with `dot_`, it will be replace with
 `.` in the user's home directory.
 
 The [`.shellrc`](home/dot_shellrc) contains the common configuration for both bash
-and ZSH.
+and ZSH to load for an interactive shell.
 
 Shell-specific `.bashrc` and `.zshrc` create a utility function to recursively source
 specifically named `.rc` files from the [`.dotfiles`](home/dot_dotfiles/) directory.

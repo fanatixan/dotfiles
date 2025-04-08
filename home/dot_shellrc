@@ -1,3 +1,10 @@
 if [[ -z "${DOTFILES_FOLDER}" ]]; then
   DOTFILES_FOLDER=$HOME/.dotfiles
 fi
+
+is_interactive() {
+  case $- in
+    *i*) return 0 ;; # Interactive shell
+    *) return 1 ;;   # Non-interactive shell
+  esac
+}
