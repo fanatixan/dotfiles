@@ -49,6 +49,7 @@ packages:
       - asdf
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
+      - cookiecutter
     casks:
       - 1password@beta
       - 1password-cli
