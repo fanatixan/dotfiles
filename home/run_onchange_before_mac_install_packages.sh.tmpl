@@ -1,7 +1,11 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/usr/bin/env bash
 
-brew bundle --file=/dev/stdin <<EOF
+brew_config_path=$HOME/.dotfiles/homebrew
+brewfile_path=$brew_config_path/Brewfile
+
+mkdir -p $brew_config_path
+cat > $brewfile_path <<EOF
 {{ range .packages.unixLike -}}
   {{- if eq "string" (printf "%T" .) -}}
 brew {{ . | quote }}
@@ -21,4 +25,6 @@ mas {{ .name | quote }}, id: {{ .id }}
 {{ end }}
 {{- end }}
 EOF
+
+brew bundle --file=$brewfile_path
 {{ end -}}
