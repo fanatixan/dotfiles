@@ -99,6 +99,7 @@ packages:
       - font-meslo-lg-nerd-font
       - stats
       - zoom
+      - vlc
     appstore:
       - name: Amphetamine
         id: 937984704
