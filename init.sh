@@ -9,7 +9,7 @@ if [ "$target_env" = "pc" ] ; then
 fi
 
 halt() {
-  >&2 echo "$1"
+  >&2 echo "💀 $1"
   exit 1
 }
 
@@ -34,7 +34,13 @@ check_platform() {
 }
 
 is_installed() {
-  command -v $1 2>&1 >/dev/null
+  if $(command -v "$1" >/dev/null 2>&1); then
+    echo "✅ $1 is installed"
+    return 0
+  fi
+  
+  echo "❌ $1 is not installed"
+  return 1
 }
 
 git_installed() {
