@@ -13,7 +13,6 @@
 
 ## Linux
 
-- [ ] brew path config in `*.sh*
 - [ ] install zsh and make it default
   - `sudo apt install zsh`
   - `chsh -s $(which zsh)`
