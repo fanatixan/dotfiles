@@ -71,14 +71,24 @@ brew_installed() {
   is_installed brew
 }
 
+brew_location() {
+  if [ "$platform" = "Mac" ]; then
+    echo "/opt/homebrew/bin/brew"
+  fi
+
+  echo "/home/linuxbrew/.linuxbrew/bin/brew"
+}
+
 try_install_brew() {
   if ! brew_installed; then
+    binary_path=$(brew_location)
+    bootstrap_expression="eval \"\$($binary_path)\""
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
     echo >> $HOME/.zshrc && \
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zshrc && \
+    echo "$bootstrap_expression" >> $HOME/.zshrc && \
     echo >> $HOME/.bashrc && \
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.bashrc && \
-    eval "$(/opt/homebrew/bin/brew shellenv)" && \
+    echo "$bootstrap_expression" >> $HOME/.bashrc && \
+    $bootstrap_expression && \
     brew doctor || \
     info "Failed to install Homebrew, going on"
   fi
