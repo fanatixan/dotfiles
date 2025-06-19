@@ -8,6 +8,14 @@ if [ "$target_env" = "pc" ] ; then
   physical_computer=true
 fi
 
+info() {
+  echo "ℹ️ $1"
+}
+
+ok() {
+  echo "✅ $1"
+}
+
 halt() {
   >&2 echo "💀 $1"
   exit 1
@@ -35,11 +43,11 @@ check_platform() {
 
 is_installed() {
   if command -v "$1" >/dev/null 2>&1; then
-    echo "✅ $1 is installed"
+    ok "$1 is installed"
     return 0
   fi
   
-  echo "❌ $1 is not installed"
+  info "$1 is not installed"
   return 1
 }
 
@@ -50,11 +58,11 @@ git_installed() {
 try_install_git() {
   if ! git_installed; then
     if [ "$platform" = "Mac" ]; then
-      halt "Failed to install git"
+      halt "Can't automatically install git on Mac"
     fi
     
     if [ "$platform" = "Linux" ]; then
-      apt-get install -y git || halt "Failed to install git"
+      apt-get install -y git && ok "git installed successfully" || halt "Failed to install git"
     fi
   fi
 }
@@ -72,7 +80,7 @@ try_install_brew() {
     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.bashrc && \
     eval "$(/opt/homebrew/bin/brew shellenv)" && \
     brew doctor || \
-    echo "Failed to install Homebrew, going on"
+    info "Failed to install Homebrew, going on"
   fi
 }
 
@@ -84,10 +92,12 @@ install_chezmoi_binary() {
 }
 
 install_chezmoi() {
+  info "Installing chezmoi"
   brew install chezmoi || install_chezmoi_binary && export PATH=$PATH:$HOME/bin
 }
 
 init_chezmoi_config() {
+  info "Adding chezmoi config"
   mkdir -p $HOME/.config/chezmoi
   cat > $HOME/.config/chezmoi/chezmoi.toml << EOF
 [onepassword]
