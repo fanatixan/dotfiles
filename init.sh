@@ -37,6 +37,22 @@ is_installed() {
   command -v $1 2>&1 >/dev/null
 }
 
+git_installed() {
+  is_installed git
+}
+
+try_install_git() {
+  if ! git_installed; then
+    if [ "$platform" = "Mac" ]; then
+      halt "Failed to install git"
+    fi
+    
+    if [ "$platform" = "Linux" ]; then
+      apt-get install -y git || halt "Failed to install git"
+    fi
+  fi
+}
+
 brew_installed() {
   is_installed brew
 }
@@ -77,6 +93,7 @@ EOF
 }
 
 check_platform
+try_install_git
 try_install_brew
 install_chezmoi
 init_chezmoi_config
