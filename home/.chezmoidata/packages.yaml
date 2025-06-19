@@ -9,7 +9,6 @@ packages:
     - ripgrep           # better grep
     - fzf
     - sd                # simpler sed
-    - rustup
     - name: zellij      # terminal multiplexer
       brew: zellij
       apk: zellij

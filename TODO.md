@@ -13,9 +13,9 @@
 
 ## Linux
 
-- [ ] install zsh and make it default
-  - `sudo apt install zsh`
+- [ ] make zsh the default shell
   - `chsh -s $(which zsh)`
+  - Problem: `chsh` needs credentials
 - [ ] install direnv
 - [ ] install zoxide
 - [ ] install asdf

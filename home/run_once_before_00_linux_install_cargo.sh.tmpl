@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+
+if ! command -v cargo >/dev/null 2>&1; then
+  curl https://sh.rustup.rs -sSf | sh -s -- -y
+  cargo_rc_path="$HOME/.dotfiles/cargo"
+  cargo_env_path="$HOME/.cargo/env"
+  mkdir -p "$cargo_rc_path"
+  echo ". \"$cargo_env_path\"" >> "$cargo_rc_path/rc.sh"
+  . "$cargo_env_path"
+fi
+
+rustup default stable
+
+{{ end -}}
