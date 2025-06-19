@@ -74,23 +74,37 @@ brew_installed() {
 brew_location() {
   if [ "$platform" = "Mac" ]; then
     echo "/opt/homebrew/bin/brew"
+  else
+    echo "/home/linuxbrew/.linuxbrew/bin/brew"
   fi
+}
 
-  echo "/home/linuxbrew/.linuxbrew/bin/brew"
+check_prerequisites() {
+  if [ "$platform" = "Linux" ]; then
+    if ! dpkg-query --show --showformat='${Status}' build-essential >/dev/null 2>&1; then
+      info "Homebrew requires build-essential to be installed, please install it first"
+      return 1
+    fi
+  fi
 }
 
 try_install_brew() {
   if ! brew_installed; then
     binary_path=$(brew_location)
-    bootstrap_expression="eval \"\$($binary_path)\""
+    bootstrap_expression="eval \"\$($binary_path shellenv)\""
+    check_prerequisites && \
+    NONINTERACTIVE=1 \
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
-    echo >> $HOME/.zshrc && \
+    \
+    info "Configuring Homebrew" && \
     echo "$bootstrap_expression" >> $HOME/.zshrc && \
-    echo >> $HOME/.bashrc && \
     echo "$bootstrap_expression" >> $HOME/.bashrc && \
-    $bootstrap_expression && \
-    brew doctor || \
-    info "Failed to install Homebrew, going on"
+    eval "$($binary_path shellenv)" && \
+    \
+    info "Installing build tools" && \
+    brew install gcc && \
+    \
+    brew doctor || info "Failed to install Homebrew, going on"
   fi
 }
 
