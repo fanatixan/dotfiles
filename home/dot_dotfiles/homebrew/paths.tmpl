@@ -1,0 +1,9 @@
+{{- if eq .chezmoi.os "darwin" }}
+brew_path=/opt/homebrew/bin/brew
+{{- else }}
+brew_path=/home/linuxbrew/.linuxbrew/bin/brew
+{{ end }}
+
+if [ -f $brew_path ]; then
+  eval "$($brew_path shellenv)"
+fi
