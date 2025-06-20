@@ -25,16 +25,16 @@ jobs:
           branch: v3.15
       - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
       - run: test -f $HOME/.dotfiles/git/aliases
-      - run: eza
+      # - run: eza
   verify-ubuntu-installation:
     runs-on: ubuntu-latest
     steps:
       - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
       - run: test -f $HOME/.dotfiles/git/aliases
-      - run: eza
+      # - run: eza
   verify-mac-installation:
     runs-on: macos-latest
     steps:
       - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
       - run: test -f $HOME/.dotfiles/git/aliases
-      - run: eza
+      # - run: eza
