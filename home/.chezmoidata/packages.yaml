@@ -10,6 +10,8 @@ packages:
     - fzf
     - sd                # simpler sed
     - direnv
+    - name: asdf
+      brew: asdf
     - name: zellij      # terminal multiplexer
       brew: zellij
       apk: zellij
@@ -46,7 +48,6 @@ packages:
       - mas             # install Mac Appstore apps from the cli
       - yq              # yaml, json, and csv processor
       - httpie
-      - asdf
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
       - cookiecutter

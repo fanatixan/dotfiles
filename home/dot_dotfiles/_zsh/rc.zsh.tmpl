@@ -87,20 +87,22 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
   git
   fzf
-{{- if eq .chezmoi.os "darwin" }}
+  direnv
+{{ if lookPath "asdf" -}}
+  asdf
+{{ end -}}  
+{{ if eq .chezmoi.os "darwin" -}}
   gh
   1password
   docker
   vscode
   mvn
   gradle
-  asdf
   npm
   python
   pip
   httpie
   thefuck
-  direnv
 {{ end -}}
 )
 

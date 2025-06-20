@@ -1,0 +1,3 @@
+{{ if not (lookPath "asdf") -}}
+*
+{{- end }}
