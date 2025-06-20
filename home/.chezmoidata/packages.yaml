@@ -9,6 +9,7 @@ packages:
     - ripgrep           # better grep
     - fzf
     - sd                # simpler sed
+    - direnv
     - name: zellij      # terminal multiplexer
       brew: zellij
       apk: zellij
@@ -49,7 +50,6 @@ packages:
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
       - cookiecutter
-      - direnv
     casks:
       - 1password@beta
       - 1password-cli
