@@ -1,5 +1,5 @@
 {{ if eq .chezmoi.os "linux" -}}
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 if ! command -v cargo >/dev/null 2>&1; then
   curl https://sh.rustup.rs -sSf | sh -s -- -y

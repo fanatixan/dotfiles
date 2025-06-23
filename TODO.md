@@ -5,7 +5,6 @@
 - [ ] Add regular cleanup script
 - [ ] Migrate from brew autoupdate to a cron job using the Brewfile
 - [ ] Mark packages as physical computer only
-- [ ] Rely on `sh` instead of bash
 
 ## Mac
 

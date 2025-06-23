@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # source: https://github.com/artginzburg/sudo-touchid
 

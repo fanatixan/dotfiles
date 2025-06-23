@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # sources:
 # https://easyosx.net/2024/01/29/enabling-auto-updates-in-homebrew/
