@@ -16,7 +16,8 @@ asdf plugin add nodejs
 asdf install nodejs latest:18
 asdf install nodejs latest:20
 asdf install nodejs latest:22
-asdf set -u nodejs $(asdf latest nodejs 22)
+asdf install nodejs latest:24
+asdf set -u nodejs $(asdf latest nodejs 24)
 
 asdf plugin add python
 asdf install python latest:3.7
