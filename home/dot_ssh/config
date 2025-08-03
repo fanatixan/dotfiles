@@ -1,5 +1,5 @@
-Host rpi-k3s-master.local
-  IdentityFile ~/.ssh/rpi-k3s/master.pub
+Host rpi-k3s-master-1.local
+  IdentityFile ~/.ssh/rpi-k3s/master-1.pub
   IdentitiesOnly yes
 
 Host rpi-k3s-worker-1.local
