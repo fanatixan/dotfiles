@@ -1,2 +1,0 @@
-export YSU_HARDCORE=0
-export YSU_HARDCORE_ALIASES=()
