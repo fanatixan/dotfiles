@@ -1,3 +1,15 @@
+Host github.com
+  IdentityFile ~/.ssh/github/github.com.pub
+  IdentitiesOnly yes
+
+Host gitlab.com
+  IdentityFile ~/.ssh/gitlab/gitlab.com.pub
+  IdentitiesOnly yes
+
+Host ssh.gitlab.galvanize.com
+  IdentityFile ~/.ssh/gitlab/gitlab.galvanize.com.pub
+  IdentitiesOnly yes
+
 Host rpi-k3s-master-1.local
   IdentityFile ~/.ssh/rpi-k3s/master-1.pub
   IdentitiesOnly yes
@@ -16,6 +28,10 @@ Host rpi-k3s-worker-3.local
 
 Host rpi-k3s-worker-4.local
   IdentityFile ~/.ssh/rpi-k3s/worker-4.pub
+  IdentitiesOnly yes
+
+Host calarm.iot.lan
+  IdentityFile ~/.ssh/misc/calarm.pub
   IdentitiesOnly yes
 
 # For other hosts, 1Password will be used through the SSH_AUTH_SOCK env var
