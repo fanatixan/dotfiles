@@ -34,6 +34,8 @@ packages:
       brew: bottom
       apt: btop
       apk: btop
+    - name: git-lfs
+      brew: git-lfs
   macos:
     brews:
       - gpg
