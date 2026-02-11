@@ -35,11 +35,19 @@
 [include]
 	path = ~/project/.gitconfig
 
+# Galvanize host config
 [includeIf "hasconfig:remote.*.url:https://gitlab.galvanize.com/**"]
 	path = ~/.dotfiles/git/hosts/gitlab.galvanize.com.gitconfig
 
 [includeIf "hasconfig:remote.*.url:git@ssh.gitlab.galvanize.com:*/**"]
 	path = ~/.dotfiles/git/hosts/gitlab.galvanize.com.gitconfig
+
+# Toptal host config
+[includeIf "hasconfig:remote.*.url:https://git.toptal.com/**"]
+	path = ~/.dotfiles/git/hosts/git.toptal.com.gitconfig
+
+[includeIf "hasconfig:remote.*.url:git@git.toptal.com:*/**"]
+	path = ~/.dotfiles/git/hosts/git.toptal.com.gitconfig
 
 {{ if (lookPath "git-lfs") -}}
 [filter "lfs"]
