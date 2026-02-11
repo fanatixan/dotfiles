@@ -1,5 +1,2 @@
-[includeIf "gitdir:~/project/galvanize/"]
-        path = ~/project/galvanize/.gitconfig
-
 [includeIf "gitdir:~/project/brix/sites/"]
         path = ~/project/brix/sites/.gitconfig

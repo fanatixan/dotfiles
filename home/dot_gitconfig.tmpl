@@ -35,6 +35,12 @@
 [include]
 	path = ~/project/.gitconfig
 
+[includeIf "hasconfig:remote.*.url:https://gitlab.galvanize.com/**"]
+	path = ~/.dotfiles/git/hosts/gitlab.galvanize.com.gitconfig
+
+[includeIf "hasconfig:remote.*.url:git@ssh.gitlab.galvanize.com:*/**"]
+	path = ~/.dotfiles/git/hosts/gitlab.galvanize.com.gitconfig
+
 {{ if (lookPath "git-lfs") -}}
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
