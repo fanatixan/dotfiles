@@ -58,8 +58,6 @@ packages:
       - 1password-cli
       - android-platform-tools
       - alt-tab
-      - windsurf
-      - appcleaner
       - audacity
       - busycal
       - camo-studio
@@ -87,10 +85,8 @@ packages:
       - reader
       - shottr
       - slack
-      - sound-control
       - todoist
       - visual-studio-code
-      - warp
       - calibre
       - iterm2
       - excalidrawz
@@ -106,12 +102,6 @@ packages:
     appstore:
       - name: Amphetamine
         id: 937984704
-      - name: PastePal
-        id: 1503446680
-      - name: DigiDoc 4
-        id: 1370791134
-      - name: Web eID
-        id: 1576665083
       - name: Numbers
         id: 409203825
       - name: Grammarly for Safari
