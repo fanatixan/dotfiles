@@ -1,29 +1,18 @@
 packages:
   unixLike:
-    - git
     - bat               # better cat
-    - eza               # better ls
     - curl
-    - wget
-    - ripgrep           # better grep
-    - fzf               # fuzzy finder
-    - sd                # simpler sed
     - direnv            # set env vars based on current folder
+    - eza               # better ls
+    - fzf               # fuzzy finder
+    - git
     - glow              # md terminal renderer
+    - ripgrep           # better grep
+    - sd                # simpler sed
     - viddy             # better watch
+    - wget
     - name: asdf        # virtual environment manager
       brew: asdf
-    - name: zellij      # terminal multiplexer
-      brew: zellij
-      apk: zellij
-      cargo: zellij
-    - name: tldr        # simpler man pages
-      brew: tlrc
-      cargo: tlrc
-    - name: zoxide      # better cd
-      brew: zoxide
-      apk: zoxide
-      cargo: zoxide
     - name: delta       # diff tool
       brew: git-delta
       cargo: git-delta
@@ -31,89 +20,100 @@ packages:
       brew: fd
       apt: fd-find
       apk: fd
+    - name: git-lfs
+      brew: git-lfs
+    - name: tldr        # simpler man pages
+      brew: tlrc
+      cargo: tlrc
     - name: top-alternative
       brew: bottom
       apt: btop
       apk: btop
-    - name: git-lfs
-      brew: git-lfs
+    - name: zellij      # terminal multiplexer
+      brew: zellij
+      apk: zellij
+      cargo: zellij
+    - name: zoxide      # better cd
+      brew: zoxide
+      apk: zoxide
+      cargo: zoxide
   macos:
     brews:
-      - gpg
-      - gh              # github cli
-      - maven
-      - gradle
-      - scrcpy          # mirror android screen
       - act             # run github actions locally
-      - netlify-cli
       - cookiecutter
-      - mas             # install Mac Appstore apps from the cli
-      - yq              # yaml, json, and csv processor
-      - httpie          # http cli client
       - dust            # shows disk usage
+      - gh              # github cli
+      - gpg
+      - gradle
+      - httpie          # http cli client
+      - mas             # install Mac Appstore apps from the cli
+      - maven
+      - netlify-cli
+      - scrcpy          # mirror android screen
       - thefuck         # corrects your previous command
+      - yq              # yaml, json, and csv processor
     casks:
-      - 1password@beta
       - 1password-cli
-      - android-platform-tools
+      - 1password@beta
       - alt-tab
+      - android-platform-tools
       - audacity
       - busycal
+      - calibre
       - capcut
       - cheatsheet
       - clocker
+      - devpod
+      - devtoys
       - docker-desktop
+      - excalidrawz
+      - font-fira-code-nerd-font
+      - font-google-sans-code
+      - font-inconsolata-nerd-font
+      - font-jetbrains-mono
+      - font-meslo-lg-nerd-font
+      - ghostty
       - gimp
       - google-chrome
       - google-drive
       - grammarly-desktop
       - guitar-pro
+      - iina
       - inkscape
+      - iterm2
       - jetbrains-toolbox
       - karabiner-elements
       - lightburn
       - mac-mouse-fix
       - meetingbar
+      - microsoft-office
       - mimestream
       - miro
       - nordvpn
       - obsidian
       - raycast
       - reader
+      - shortcat
       - shottr
       - slack
+      - stats
       - todoist-app
       - visual-studio-code
-      - calibre
-      - iterm2
-      - excalidrawz
-      - devpod
-      - microsoft-office
-      - font-inconsolata-nerd-font
-      - font-fira-code-nerd-font
-      - font-meslo-lg-nerd-font
-      - font-google-sans-code
-      - font-jetbrains-mono
-      - ghostty
-      - iina
-      - stats
-      - zoom
       - vlc
-      - devtoys
-      - shortcat
       - zed
+      - zoom
     appstore:
-      - name: Amphetamine
-        id: 937984704
-      - name: Numbers
-        id: 409203825
-      - name: Grammarly for Safari
-        id: 1462114288
       - name: 1Password for Safari
         id: 1569813296
       - name: AdGuard for Safari
         id: 1440147259
       - name: Amazon Kindle
         id: 302584613
+      - name: Amphetamine
+        id: 937984704
       - name: Folder Tidy
         id: 486626129
+      - name: Grammarly for Safari
+        id: 1462114288
+      - name: Numbers
+        id: 409203825
