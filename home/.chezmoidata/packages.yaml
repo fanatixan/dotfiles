@@ -2,15 +2,16 @@ packages:
   unixLike:
     - git
     - bat               # better cat
-    - tig
     - eza               # better ls
     - curl
     - wget
     - ripgrep           # better grep
-    - fzf
+    - fzf               # fuzzy finder
     - sd                # simpler sed
-    - direnv
-    - name: asdf
+    - direnv            # set env vars based on current folder
+    - glow              # md terminal renderer
+    - viddy             # better watch
+    - name: asdf        # virtual environment manager
       brew: asdf
     - name: zellij      # terminal multiplexer
       brew: zellij
@@ -39,8 +40,7 @@ packages:
   macos:
     brews:
       - gpg
-      - gawk
-      - gh
+      - gh              # github cli
       - maven
       - gradle
       - scrcpy          # mirror android screen
@@ -49,10 +49,9 @@ packages:
       - cookiecutter
       - mas             # install Mac Appstore apps from the cli
       - yq              # yaml, json, and csv processor
-      - httpie
+      - httpie          # http cli client
       - dust            # shows disk usage
       - thefuck         # corrects your previous command
-      - cookiecutter
     casks:
       - 1password@beta
       - 1password-cli
@@ -60,13 +59,11 @@ packages:
       - alt-tab
       - audacity
       - busycal
-      - camo-studio
       - capcut
       - cheatsheet
       - clocker
-      - docker
+      - docker-desktop
       - gimp
-      - gather
       - google-chrome
       - google-drive
       - grammarly-desktop
@@ -85,20 +82,26 @@ packages:
       - reader
       - shottr
       - slack
-      - todoist
+      - todoist-app
       - visual-studio-code
       - calibre
       - iterm2
       - excalidrawz
       - devpod
       - microsoft-office
-      - font-inconsolata
       - font-inconsolata-nerd-font
       - font-fira-code-nerd-font
       - font-meslo-lg-nerd-font
+      - font-google-sans-code
+      - font-jetbrains-mono
+      - ghostty
+      - iina
       - stats
       - zoom
       - vlc
+      - devtoys
+      - shortcat
+      - zed
     appstore:
       - name: Amphetamine
         id: 937984704
