@@ -10,24 +10,28 @@ Host ssh.gitlab.galvanize.com
   IdentityFile ~/.ssh/gitlab/gitlab.galvanize.com.pub
   IdentitiesOnly yes
 
-Host rpi-k3s-master-1.local
-  IdentityFile ~/.ssh/rpi-k3s/master-1.pub
+Host node-1.local
+  IdentityFile ~/.ssh/homelab/node-1.pub
   IdentitiesOnly yes
 
-Host rpi-k3s-worker-1.local
-  IdentityFile ~/.ssh/rpi-k3s/worker-1.pub
+Host node-2.local
+  IdentityFile ~/.ssh/homelab/node-2.pub
   IdentitiesOnly yes
 
-Host rpi-k3s-worker-2.local
-  IdentityFile ~/.ssh/rpi-k3s/worker-2.pub
+Host node-3.local
+  IdentityFile ~/.ssh/homelab/node-3.pub
   IdentitiesOnly yes
 
-Host rpi-k3s-worker-3.local
-  IdentityFile ~/.ssh/rpi-k3s/worker-3.pub
+Host node-4.local
+  IdentityFile ~/.ssh/homelab/node-4.pub
   IdentitiesOnly yes
 
-Host rpi-k3s-worker-4.local
-  IdentityFile ~/.ssh/rpi-k3s/worker-4.pub
+Host node-5.local
+  IdentityFile ~/.ssh/homelab/node-5.pub
+  IdentitiesOnly yes
+
+Host forge.lab.lan
+  IdentityFile ~/.ssh/homelab/forge.pub
   IdentitiesOnly yes
 
 Host calarm.iot.lan
