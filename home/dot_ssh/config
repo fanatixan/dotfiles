@@ -10,27 +10,39 @@ Host ssh.gitlab.galvanize.com
   IdentityFile ~/.ssh/gitlab/gitlab.galvanize.com.pub
   IdentitiesOnly yes
 
-Host node-1.local
+Host node-1
+  HostName node-1.lab.lan
+  User attila
   IdentityFile ~/.ssh/homelab/node-1.pub
   IdentitiesOnly yes
 
-Host node-2.local
+Host node-2
+  HostName node-2.lab.lan
+  User attila
   IdentityFile ~/.ssh/homelab/node-2.pub
   IdentitiesOnly yes
 
-Host node-3.local
+Host node-3
+  HostName node-3.lab.lan
+  User attila
   IdentityFile ~/.ssh/homelab/node-3.pub
   IdentitiesOnly yes
 
-Host node-4.local
+Host node-4
+  HostName node-4.lab.lan
+  User attila
   IdentityFile ~/.ssh/homelab/node-4.pub
   IdentitiesOnly yes
 
-Host node-5.local
+Host node-5
+  HostName node-5.lab.lan
+  User attila
   IdentityFile ~/.ssh/homelab/node-5.pub
   IdentitiesOnly yes
 
-Host forge.lab.lan
+Host forge
+  HostName forge.lab.lan
+  User attila
   IdentityFile ~/.ssh/homelab/forge.pub
   IdentitiesOnly yes
 
