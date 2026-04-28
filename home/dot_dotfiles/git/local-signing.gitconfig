@@ -1,0 +1,9 @@
+[include]
+    path = ~/.gitconfig
+
+[user]
+    signingkey = ~/.ssh/local/local_signing.pub
+[gpg]
+    format = ssh
+[commit]
+    gpgsign = true
