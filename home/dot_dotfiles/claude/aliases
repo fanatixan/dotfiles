@@ -1,1 +1,1 @@
-alias clauded="GIT_CONFIG_GLOBAL=~/.dotfiles/git/local-signing.gitconfig claude --dangerously-skip-permissions"
+alias clauded="SSH_AUTH_SOCK='' GIT_CONFIG_GLOBAL=~/.dotfiles/git/local-signing.gitconfig claude --dangerously-skip-permissions"
