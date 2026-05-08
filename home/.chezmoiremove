@@ -1,3 +1,4 @@
 .dotfiles/_zsh/oh-my-zsh/
+.dotfiles/zoxide/aliases
 .oh-my-zsh/
 project/galvanize/.gitconfig
