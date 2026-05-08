@@ -1,1 +1,1 @@
-alias cd="z"
+alias cd="z && ll"
