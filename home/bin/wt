@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage:
+  wt add <name>        Create worktree at .wt/<name> on a new branch <name>
+  wt rm [-f] <name>    Remove worktree at .wt/<name> (-f forces if dirty)
+  wt ls                List worktrees
+  wt prune             Prune stale worktree metadata
+EOF
+}
+
+die() { echo "wt: $*" >&2; exit 1; }
+
+validate_name() {
+  [[ "${1:-}" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] \
+    || die "invalid name '${1:-}' (lowercase kebab-case only)"
+}
+
+repo_root() {
+  git rev-parse --show-toplevel 2>/dev/null || die "not in a git repository"
+}
+
+cmd_add() {
+  validate_name "${1:-}"
+  local root path
+  root="$(repo_root)"
+  path="$root/.wt/$1"
+  [[ ! -e "$path" ]] || die "worktree already exists at $path"
+  git -C "$root" worktree add "$path" -b "$1"
+  echo "$path"
+  if ! git -C "$root" check-ignore -q "$path" 2>/dev/null; then
+    echo "wt: warning: .wt/ is not gitignored — add '.wt/' to .gitignore" >&2
+  fi
+}
+
+cmd_rm() {
+  local force=()
+  if [[ "${1:-}" == "-f" ]]; then
+    force=(--force)
+    shift
+  fi
+  validate_name "${1:-}"
+  local root path
+  root="$(repo_root)"
+  path="$root/.wt/$1"
+  git -C "$root" worktree remove "${force[@]}" "$path"
+}
+
+main() {
+  local sub="${1:-}"; shift || true
+  case "$sub" in
+    add)   cmd_add   "$@" ;;
+    rm)    cmd_rm    "$@" ;;
+    ls)    git worktree list ;;
+    prune) git worktree prune -v ;;
+    -h|--help|help|"") usage ;;
+    *) usage; exit 1 ;;
+  esac
+}
+
+main "$@"
