@@ -20,4 +20,6 @@ if is_interactive; then
   source_all_dotfiles after_rc.sh
   source_all_dotfiles after_rc.bash
   source_all_dotfiles aliases
+  source_all_dotfiles functions.sh
+  source_all_dotfiles functions.bash
 fi

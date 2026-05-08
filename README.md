@@ -106,6 +106,8 @@ Files are loaded in the following order:
 6. `after_rc.sh` files
 7. Shell specific `after_rc.bash`/`after_rc.zsh` files
 8. `alias` files
+9. `functions.sh` files
+10. Shell specific `functions.bash`/`functions.zsh` files
 
 Note that for a non-interactive shell, only `paths` files are loaded.
 
