@@ -46,6 +46,18 @@ Host forge
   IdentityFile ~/.ssh/homelab/forge.pub
   IdentitiesOnly yes
 
+Host edge-1
+  HostName edge-1.lab.lan
+  User attila
+  IdentityFile ~/.ssh/homelab/edge-1.pub
+  IdentitiesOnly yes
+
+Host trust-1
+  HostName trust-1.lab.lan
+  User attila
+  IdentityFile ~/.ssh/homelab/trust-1.pub
+  IdentitiesOnly yes
+
 Host calarm.iot.lan
   IdentityFile ~/.ssh/misc/calarm.pub
   IdentitiesOnly yes
