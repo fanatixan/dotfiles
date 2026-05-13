@@ -13,6 +13,7 @@ packages:
     - wget
     - tmux
     - tmuxinator
+    - mosh
     - name: asdf        # virtual environment manager
       brew: asdf
     - name: delta       # diff tool
