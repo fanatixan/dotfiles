@@ -11,6 +11,8 @@ packages:
     - sd                # simpler sed
     - viddy             # better watch
     - wget
+    - tmux
+    - tmuxinator
     - name: asdf        # virtual environment manager
       brew: asdf
     - name: delta       # diff tool
@@ -29,10 +31,6 @@ packages:
       brew: bottom
       apt: btop
       apk: btop
-    - name: zellij      # terminal multiplexer
-      brew: zellij
-      apk: zellij
-      cargo: zellij
     - name: zoxide      # better cd
       brew: zoxide
       apk: zoxide
