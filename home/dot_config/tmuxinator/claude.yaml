@@ -4,7 +4,7 @@ enable_pane_titles: true
 
 windows:
   - main:
-      layout: main-vertical
+      layout: even-horizontal
       panes:
         - claude: clauded
         - terminal: ''
