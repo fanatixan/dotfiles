@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "darwin" -}}
+# Option key sends Alt/Meta so tmux `prefix M-v` etc. register
+macos-option-as-alt = true
+{{ end -}}
+
+font-family = "MesloLGS Nerd Font Mono"
+font-feature = "-calt, -liga, -dlig"
+font-size = 12
