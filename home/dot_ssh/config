@@ -58,8 +58,15 @@ Host trust-1
   IdentityFile ~/.ssh/homelab/trust-1.pub
   IdentitiesOnly yes
 
-Host calarm.iot.lan
+Host calarm
+  HostName calarm.iot.lan
+  User attila
   IdentityFile ~/.ssh/misc/calarm.pub
   IdentitiesOnly yes
+
+Host mac-m4
+  HostName mac-m4.clients.lan
+  User attila
+  ForwardAgent yes
 
 # For other hosts, 1Password will be used through the SSH_AUTH_SOCK env var
