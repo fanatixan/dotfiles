@@ -68,5 +68,11 @@ Host mac-m4
   HostName mac-m4.clients.lan
   User attila
   ForwardAgent yes
+  # Reuse one connection for all sessions
+  ControlMaster auto
+  ControlPath ~/.ssh/cm-%C # %C: short hash (avoids macOS 104-char socket limit)
+  ControlPersist 10m
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
 
 # For other hosts, 1Password will be used through the SSH_AUTH_SOCK env var
