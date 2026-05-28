@@ -48,5 +48,6 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <silent> <esc><esc> :nohlsearch<CR>
 
-" Cheat sheet (glow rendered in :term split; q closes the split via ++close)
-nnoremap <leader>? :vert term ++close glow -p ~/cheatsheets/vim/general.md<CR>
+" Cheat sheet (glow in :term split; q closes via ++close).
+" expand() resolves ~ — vim's :term passes argv literally and won't do it.
+nnoremap <leader>? :execute 'vert term ++close glow -p ' . expand('~/cheatsheets/vim/general.md')<CR>
