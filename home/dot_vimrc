@@ -1,0 +1,52 @@
+set nocompatible
+
+" Plugins — list lives in ~/.vim/plugins.vim (chezmoi reinstalls on change)
+call plug#begin('~/.vim/plugged')
+source ~/.vim/plugins.vim
+call plug#end()
+
+filetype plugin indent on
+syntax on
+set number relativenumber            " hybrid line numbers
+set hidden                           " switch buffers without saving
+set incsearch hlsearch ignorecase smartcase
+set scrolloff=5
+set mouse=a
+set splitright splitbelow
+set wildmenu
+set termguicolors                    " 24-bit color
+set clipboard=unnamed                " yank -> Mac pasteboard (host-local)
+
+let mapleader = " "                  " leader = Space
+
+" fzf (uses ripgrep + fd)
+let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>/ :Rg<CR>           " search file contents
+nnoremap <leader>l :BLines<CR>
+
+" NERDTree
+nnoremap <leader>e :NERDTreeToggle<CR>
+nnoremap <leader>n :NERDTreeFind<CR>
+let NERDTreeShowHidden = 1
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" OSC52: every yank also goes to the client clipboard over SSH
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is ''
+      \ | call OSCYankRegister('"') | endif
+vnoremap <leader>y :OSCYankVisual<CR>
+
+" Window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Quality of life
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <silent> <esc><esc> :nohlsearch<CR>
+
+" Cheat sheet (glow rendered in :term split; q closes the split via ++close)
+nnoremap <leader>? :vert term ++close glow -p ~/cheatsheets/vim/general.md<CR>
