@@ -1,14 +1,13 @@
-Host github.com
-  IdentityFile ~/.ssh/github/github.com.pub
-  IdentitiesOnly yes
-
-Host gitlab.com
-  IdentityFile ~/.ssh/gitlab/gitlab.com.pub
-  IdentitiesOnly yes
-
-Host ssh.gitlab.galvanize.com
-  IdentityFile ~/.ssh/gitlab/gitlab.galvanize.com.pub
-  IdentitiesOnly yes
+Host mac-m4
+  HostName mac-m4.clients.lan
+  User attila
+  ForwardAgent yes
+  # Reuse one connection for all sessions
+  ControlMaster auto
+  ControlPath ~/.ssh/cm-%C # %C: short hash (avoids macOS 104-char socket limit)
+  ControlPersist 10m
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
 
 Host node-1
   HostName node-1.lab.lan
@@ -64,15 +63,16 @@ Host calarm
   IdentityFile ~/.ssh/misc/calarm.pub
   IdentitiesOnly yes
 
-Host mac-m4
-  HostName mac-m4.clients.lan
-  User attila
-  ForwardAgent yes
-  # Reuse one connection for all sessions
-  ControlMaster auto
-  ControlPath ~/.ssh/cm-%C # %C: short hash (avoids macOS 104-char socket limit)
-  ControlPersist 10m
-  ServerAliveInterval 30
-  ServerAliveCountMax 3
+Host github.com
+  IdentityFile ~/.ssh/github/github.com.pub
+  IdentitiesOnly yes
+
+Host gitlab.com
+  IdentityFile ~/.ssh/gitlab/gitlab.com.pub
+  IdentitiesOnly yes
+
+Host ssh.gitlab.galvanize.com
+  IdentityFile ~/.ssh/gitlab/gitlab.galvanize.com.pub
+  IdentitiesOnly yes
 
 # For other hosts, 1Password will be used through the SSH_AUTH_SOCK env var
