@@ -6,6 +6,11 @@ source ~/.vim/plugins.vim
 call plug#end()
 
 filetype plugin indent on
+" tmux-256color terminfo omits the background-query capability vim uses to
+" auto-detect light/dark, so under tmux vim falls back to background=light and
+" loads the light variant of the default colorscheme (dark blue/brown) onto
+" Ghostty's dark background. Pin it so colors match in and out of tmux.
+set background=dark
 syntax on
 set number relativenumber            " hybrid line numbers
 set hidden                           " switch buffers without saving
