@@ -15,6 +15,10 @@ set mouse=a
 set splitright splitbelow
 set wildmenu
 set termguicolors                    " 24-bit color
+" Truecolor under tmux: tmux-256color terminfo doesn't advertise RGB, so Vim
+" needs the set-foreground/background sequences spelled out explicitly.
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set clipboard=unnamed                " yank -> Mac pasteboard (host-local)
 
 let mapleader = " "                  " leader = Space
@@ -50,4 +54,8 @@ nnoremap <silent> <esc><esc> :nohlsearch<CR>
 
 " Cheat sheet (glow in :term split; q closes via ++close).
 " expand() resolves ~ — vim's :term passes argv literally and won't do it.
-nnoremap <leader>? :execute 'vert term ++close glow -p ' . expand('~/cheatsheets/vim/general.md')<CR>
+" env TERM=tmux-256color: vim's :term otherwise forces TERM=xterm-256color,
+" which breaks tmux's truecolor passthrough for the nested glow and down-samples
+" its colors to 256. Matching the TERM that glow sees when run directly in tmux
+" (where the tmux cheatsheet renders correctly) restores truecolor.
+nnoremap <leader>? :execute 'vert term ++close env TERM=tmux-256color glow -p ' . expand('~/cheatsheets/vim/general.md')<CR>
