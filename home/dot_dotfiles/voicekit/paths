@@ -1,0 +1,3 @@
+export VOICEKIT_HOME=$HOME/project/fanai/voicekit
+export VOICE_PROFILE_HOME=$HOME/project/fanai/voice-profile
+export PATH="$VOICEKIT_HOME/bin:$PATH"

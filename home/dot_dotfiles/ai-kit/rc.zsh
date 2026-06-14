@@ -1,0 +1,1 @@
+eval "$(aik completion zsh)"

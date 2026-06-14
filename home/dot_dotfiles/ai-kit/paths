@@ -1,0 +1,3 @@
+export AI_KIT_HOME=$HOME/project/fanai/ai-kit
+export AIK_PROFILE_HOME=$HOME/project/fanai/aik-profile
+export PATH="$AI_KIT_HOME/bin:$PATH"
