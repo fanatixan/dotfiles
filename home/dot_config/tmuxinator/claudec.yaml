@@ -1,0 +1,10 @@
+name: claude
+root: <%= ENV["PWD"] %>
+enable_pane_titles: true
+
+windows:
+  - main:
+      layout: even-horizontal
+      panes:
+        - claude: clauded -c
+        - terminal: ''
