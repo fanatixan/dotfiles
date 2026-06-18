@@ -13,6 +13,8 @@ source_all_dotfiles() {
 source_all_dotfiles paths
 
 if is_interactive; then
+  source_all_dotfiles completion.sh
+  source_all_dotfiles completion.bash
   source_all_dotfiles before_rc.sh
   source_all_dotfiles before_rc.bash
   source_all_dotfiles rc.sh

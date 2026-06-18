@@ -84,6 +84,10 @@ Currently two types of files are supported:
   Example: [home/dot_dotfiles/bat/aliases](home/dot_dotfiles/bat/aliases)
 - `paths` files containing path configuration.
   Example: [home/dot_dotfiles/general/paths](home/dot_dotfiles/general/paths)
+- `completion` files that put a tool's `#compdef` completion on `fpath` so the
+  `compinit` in [home/dot_dotfiles/_zsh/literal_before_rc.zsh](home/dot_dotfiles/_zsh/literal_before_rc.zsh)
+  registers it. They run before the `before_rc` files for exactly that reason.
+  Example: [home/dot_dotfiles/ai-kit/completion.zsh](home/dot_dotfiles/ai-kit/completion.zsh)
 
 `rc` files should have one of the following extensions:
 
@@ -99,15 +103,17 @@ Currently two types of files are supported:
 Files are loaded in the following order:
 
 1. `paths` files
-2. `before_rc.sh` files
-3. Shell specific `before_rc.bash`/`before_rc.zsh` files
-4. `rc.sh` files
-5. Shell specific `rc.bash`/`rc.zsh` files
-6. `after_rc.sh` files
-7. Shell specific `after_rc.bash`/`after_rc.zsh` files
-8. `alias` files
-9. `functions.sh` files
-10. Shell specific `functions.bash`/`functions.zsh` files
+2. `completion.sh` files
+3. Shell specific `completion.bash`/`completion.zsh` files
+4. `before_rc.sh` files
+5. Shell specific `before_rc.bash`/`before_rc.zsh` files
+6. `rc.sh` files
+7. Shell specific `rc.bash`/`rc.zsh` files
+8. `after_rc.sh` files
+9. Shell specific `after_rc.bash`/`after_rc.zsh` files
+10. `alias` files
+11. `functions.sh` files
+12. Shell specific `functions.bash`/`functions.zsh` files
 
 Note that for a non-interactive shell, only `paths` files are loaded.
 
