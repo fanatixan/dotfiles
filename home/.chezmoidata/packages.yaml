@@ -115,5 +115,5 @@ packages:
         id: 486626129
       - name: Grammarly for Safari
         id: 1462114288
-      - name: Numbers
-        id: 409203825
+#      - name: Numbers
+#        id: 409203825
