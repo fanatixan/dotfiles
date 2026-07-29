@@ -88,14 +88,24 @@ Example — using register `a` explicitly:
 
 ## Files / search
 
-| Key           | Action                                     |
-|---------------|--------------------------------------------|
-| `<leader>f`   | fuzzy-find files (fzf + fd)                |
-| `<leader>b`   | switch buffer                              |
-| `<leader>/`   | search contents across project (ripgrep)   |
-| `<leader>l`   | search lines in current file               |
-| `<leader>e`   | toggle file explorer (NERDTree)            |
-| `<leader>n`   | reveal current file in the tree            |
+These are identical in neovim — same key, same action, different plugin.
+
+| Key           | Action                                     | neovim                  |
+|---------------|--------------------------------------------|-------------------------|
+| `<leader>F`   | fuzzy-find files (fzf + fd)                | `Snacks.picker.files`   |
+| `<leader>B`   | switch buffer                              | `Snacks.picker.buffers` |
+| `<leader>/`   | search contents across project (ripgrep)   | `Snacks.picker.grep`    |
+| `<leader>l`   | search lines in current file               | `Snacks.picker.lines`   |
+| `<leader>r`   | recently opened files                      | `Snacks.picker.recent`  |
+| `<leader>G`   | git-tracked files                          | `Snacks.picker.git_files` |
+| `<leader>I`   | find files **including gitignored**        | `Snacks.picker.files`   |
+| `<leader>e`   | toggle file explorer (NERDTree)            | `Snacks.explorer`       |
+| `<leader>E`   | reveal current file in the tree            | `Snacks.explorer.reveal`|
+
+Dotfiles are shown/searched everywhere; `.git/` and gitignored paths are not.
+Reach gitignored files (`.env` and friends) with `<leader>I`. Expect
+`node_modules` in the results — filter by typing. NERDTree ignores `.gitignore`
+entirely, so the tree already shows them; `I` toggles hidden files there.
 
 ## Editing basics
 
@@ -118,8 +128,8 @@ Example — using register `a` explicitly:
 |------------------|-------------------------------|
 | `Ctrl-h j k l`   | move between split windows    |
 | `:vsp` / `:sp`   | vertical / horizontal split   |
-| `<leader>w`      | save                          |
-| `<leader>q`      | quit                          |
+| `<leader>W`      | save                          |
+| `<leader>Q`      | quit                          |
 | `:bn` / `:bp`    | next / previous buffer        |
 | `:bd`            | close buffer                  |
 

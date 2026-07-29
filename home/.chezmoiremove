@@ -2,3 +2,5 @@
 .dotfiles/zoxide/aliases
 .oh-my-zsh/
 project/galvanize/.gitconfig
+.config/tmuxinator/*.yaml
+

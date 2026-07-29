@@ -1,0 +1,11 @@
+name: neovim + claude
+root: <%= ENV["PWD"] %>
+enable_pane_titles: true
+
+windows:
+  - workspace:
+      layout: main-vertical
+      panes:
+        - editor: nvim
+        - claude: clauded
+        - terminal: ""

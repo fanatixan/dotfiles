@@ -28,16 +28,53 @@ set clipboard=unnamed                " yank -> Mac pasteboard (host-local)
 
 let mapleader = " "                  " leader = Space
 
+" Hotkeys below are kept identical to ~/.config/nvim/lua/config/keymaps.lua so
+" muscle memory carries between vim and neovim. Change one, change both.
+
+" NOTE: never put a trailing " comment on a :map line -- vim takes the whole
+" rest of the line as the {rhs}, so the comment text gets replayed as
+" keystrokes after the mapping fires. Comments go above the mapping.
+
 " fzf (uses ripgrep + fd)
 let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>/ :Rg<CR>           " search file contents
+" F/B/W/Q rather than f/b/w/q: neovim's LazyVim owns a menu under each of those
+" lowercase letters, so the shifted keys are what can be identical in both
+" editors. See ~/.config/nvim/lua/config/keymaps.lua.
+nnoremap <leader>F :Files<CR>
+nnoremap <leader>B :Buffers<CR>
+" Override fzf.vim's stock :Rg to search dotfiles too (--hidden), keeping .git
+" out. Without this, grep would silently skip files the picker happily lists,
+" since $FZF_DEFAULT_COMMAND above already passes --hidden. Same behaviour as
+" neovim's Snacks grep -- see ~/.config/nvim/lua/plugins/snacks.lua.
+" Base command copied from fzf.vim's own definition, plus the two flags.
+command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   "rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git' -- "
+      \     .fzf#shellescape(<q-args>),
+      \   fzf#vim#with_preview(), <bang>0)
+
+" search file contents across the project
+nnoremap <leader>/ :Rg<CR>
 nnoremap <leader>l :BLines<CR>
+" recently opened files
+nnoremap <leader>r :History<CR>
+" git-tracked files
+nnoremap <leader>G :GFiles<CR>
+
+" Find files including gitignored ones (--no-ignore) -- for .env-style files
+" that are deliberately ignored but still need editing. fzf.vim has no runtime
+" toggle, so this is a separate command; neovim's twin is <leader>I, which also
+" has an in-picker <a-i> toggle.
+command! -bang -nargs=? -complete=dir FilesAll
+      \ call fzf#vim#files(<q-args>,
+      \   fzf#vim#with_preview({'source': 'fd --type f --hidden --no-ignore --follow --exclude .git'}),
+      \   <bang>0)
+nnoremap <leader>I :FilesAll<CR>
 
 " NERDTree
 nnoremap <leader>e :NERDTreeToggle<CR>
-nnoremap <leader>n :NERDTreeFind<CR>
+" reveal the current file in the tree
+nnoremap <leader>E :NERDTreeFind<CR>
 let NERDTreeShowHidden = 1
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
@@ -53,8 +90,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Quality of life
-nnoremap <leader>w :w<CR>
-nnoremap <leader>q :q<CR>
+nnoremap <leader>W :w<CR>
+nnoremap <leader>Q :q<CR>
 nnoremap <silent> <esc><esc> :nohlsearch<CR>
 
 " Cheat sheet (glow in :term split; q closes via ++close).

@@ -14,6 +14,7 @@ packages:
     - tmux
     - tmuxinator
     - mosh
+    - neovim
     - name: asdf        # virtual environment manager
       brew: asdf
     - name: delta       # diff tool
