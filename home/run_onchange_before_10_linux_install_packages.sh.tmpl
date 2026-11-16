@@ -1,5 +1,8 @@
 {{- define "install" -}}
   {{ if and (lookPath "brew") (hasKey . "brew") -}}
+    {{ if hasKey . "tap" -}}
+    brew tap {{ .tap }} && { brew trust --tap {{ .tap }} || true; }
+    {{ end -}}
     brew install {{ .brew }}
   {{ else if and (lookPath "apt") (hasKey . "apt") -}}
     sudo apt install -y {{ .apt }}
@@ -19,16 +22,20 @@
 
 {{ $role := .role -}}
 
-{{ range .packages.unixLike -}}
+{{ range .packages -}}
   {{ $pkg := . -}}
   {{ if eq "string" (printf "%T" .) -}}
     {{ $pkg = dict "name" . -}}
   {{ end -}}
+  {{ if and (hasKey $pkg "name") (not (hasKey $pkg "cask")) (not (hasKey $pkg "mas")) -}}
   {{ if or (not (hasKey $pkg "roles")) (has $role $pkg.roles) -}}
-    {{ if not (or (hasKey $pkg "brew") (hasKey $pkg "apt") (hasKey $pkg "apk") (hasKey $pkg "cargo") (hasKey $pkg "linuxCommand")) -}}
+    {{ if hasKey $pkg "tap" -}}
+      {{ $pkg = merge (dict "brew" (printf "%s/%s" $pkg.tap $pkg.name)) $pkg -}}
+    {{ else if not (or (hasKey $pkg "brew") (hasKey $pkg "apt") (hasKey $pkg "apk") (hasKey $pkg "cargo") (hasKey $pkg "linuxCommand")) -}}
       {{ $pkg = merge (dict "brew" $pkg.name "apt" $pkg.name "apk" $pkg.name "cargo" $pkg.name) $pkg -}}
     {{ end -}}
     {{ template "install" $pkg }}
+  {{ end -}}
   {{ end -}}
 {{ end -}}
 {{ end -}}

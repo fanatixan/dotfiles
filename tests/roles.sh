@@ -38,6 +38,7 @@ linux_pkgs=run_onchange_before_10_linux_install_packages.sh.tmpl
 mac_pkgs=run_onchange_before_10_mac_install_packages.sh.tmpl
 cargo=run_once_before_00_linux_install_cargo.sh.tmpl
 zsh=dot_dotfiles/_zsh/run_once_before_00_install_zsh.sh.tmpl
+tla=run_onchange_after_40_install_tlaplus.sh.tmpl
 
 # --- config template: init writes the role it is given --------------------
 os=linux role=init
@@ -54,6 +55,13 @@ out=$(render "$mac_pkgs")
 contains "mac packages" "$out" 'cask "ghostty"'
 contains "mac packages" "$out" 'brew "jq"'
 contains "mac packages" "$out" 'brew "mosh"'
+contains "mac packages" "$out" 'brew "gh"'
+contains "mac packages" "$out" 'brew "agda"'
+contains "mac packages" "$out" 'brew trust --tap hashicorp/tap'
+contains "mac packages" "$out" 'brew "hashicorp/tap/nomad"'
+contains "mac packages" "$out" 'mas "Xcode", id: 497799835'
+contains "mac packages" "$out" 'mas "Numbers", id: 361304891'
+contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
 out=$(render dot_gitconfig.tmpl)
 contains "gitconfig" "$out" 'signingkey = ssh-ed25519 AAAA'
 
@@ -64,10 +72,14 @@ has_target .config/nvim/init.lua
 has_target .dotfiles/_zsh/antidote/rc.zsh
 no_target .dotfiles/1password
 out=$(render "$linux_pkgs")
-for p in git ripgrep jq yq tmuxinator neovim direnv asdf git-delta; do
+for p in git ripgrep jq yq tmuxinator neovim direnv asdf git-delta agda \
+  gradle maven just watchexec pandoc; do
   contains "linux packages" "$out" "brew install $p\$"
 done
-for p in mosh viddy; do lacks "linux packages" "$out" "install $p"; done
+for p in mosh viddy gh act nomad cloudflared ghostty Xcode; do
+  lacks "linux packages" "$out" "$p"
+done
+contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
 empty "cargo script" "$(render "$cargo")"
 contains "zsh script" "$(render "$zsh")" 'zsh'
 out=$(render dot_gitconfig.tmpl)
@@ -84,6 +96,7 @@ for t in .ssh .dotfiles/1password .config/nvim .config/tmuxinator \
   no_target "$t"
 done
 lacks "linux packages" "$(render "$linux_pkgs")" 'install'
+empty "tla+ script" "$(render "$tla")"
 empty "cargo script" "$(render "$cargo")"
 empty "zsh script" "$(render "$zsh")"
 out=$(render dot_gitconfig.tmpl)
@@ -110,11 +123,32 @@ done
 use_role container linux
 no_target .ssh
 no_target .dotfiles/1password
-contains "linux packages" "$(render "$linux_pkgs")" 'install mosh'
+out=$(render "$linux_pkgs")
+contains "linux packages" "$out" 'install pandoc'
+lacks "linux packages" "$out" 'install mosh'
 contains "cargo script" "$(render "$cargo")" 'rustup'
+
+# --- macOS container (CI): no workstation-only packages ---------------------
+use_role container darwin
+out=$(render "$mac_pkgs")
+contains "mac packages" "$out" 'brew "jq"'
+for p in cask mas 'brew "gh"' 'brew "mosh"' 'hashicorp/tap'; do
+  lacks "mac packages" "$out" "$p"
+done
 
 # --- static: the apk branch uses the apk name and no -y ---------------------
 role=static os=any
+# --- static: every package entry uses known keys and roles ------------------
+bad=$(yq -r '.packages[] | select(tag == "!!map") | to_entries[]
+  | select(.key | test("^(name|brew|apt|apk|cargo|linuxCommand|roles|tap|cask|mas)$") | not)
+  | .key' "$repo/home/.chezmoidata/packages.yaml")
+[ -z "$bad" ] || fail "unknown package keys: $bad"
+bad=$(yq -r '.packages[] | select(tag == "!!map") | .roles // [] | .[]
+  | select(test("^(workstation|worker|container)$") | not)' "$repo/home/.chezmoidata/packages.yaml")
+[ -z "$bad" ] || fail "unknown package roles: $bad"
+bad=$(yq -r '.packages[] | select(tag == "!!map") | select(has("mas") and (has("name") | not)) | .mas' \
+  "$repo/home/.chezmoidata/packages.yaml")
+[ -z "$bad" ] || fail "mas entries without a name: $bad"
 grep -q 'apk add {{ .apk }}' "$repo/home/$linux_pkgs" ||
   fail "apk branch must run 'apk add {{ .apk }}'"
 

@@ -1,0 +1,46 @@
+{{- /* TLA+ command-line tools aren't in Homebrew. The agent role installs nothing:
+       it gets them through the worker's shared Homebrew prefix. */ -}}
+{{ if ne .role "agent" -}}
+#!/usr/bin/env sh
+set -eu
+
+version=1.7.4
+sha256=936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88
+url="https://github.com/tlaplus/tlaplus/releases/download/v$version/tla2tools.jar"
+
+if command -v brew >/dev/null 2>&1; then
+  prefix=$(brew --prefix)
+else
+  prefix=$HOME/.local
+fi
+jar="$prefix/share/tlaplus/tla2tools.jar"
+mkdir -p "$prefix/share/tlaplus" "$prefix/bin"
+
+tmp=$(mktemp)
+trap 'rm -f "$tmp"' EXIT
+curl -fsSL -o "$tmp" "$url"
+if command -v sha256sum >/dev/null 2>&1; then
+  actual=$(sha256sum "$tmp" | cut -d' ' -f1)
+else
+  actual=$(shasum -a 256 "$tmp" | cut -d' ' -f1)
+fi
+if [ "$actual" != "$sha256" ]; then
+  echo "tla2tools.jar checksum mismatch: $actual" >&2
+  exit 1
+fi
+mv "$tmp" "$jar"
+chmod 644 "$jar"
+
+# tlc: model checker, sany: parser, pcal: PlusCal translator
+for tool in "tlc:tlc2.TLC" "sany:tla2sany.SANY" "pcal:pcal.trans"; do
+  name=${tool%%:*}
+  class=${tool#*:}
+  cat > "$prefix/bin/$name" <<EOF
+#!/usr/bin/env sh
+exec java -XX:+UseParallelGC -cp "$jar" $class "\$@"
+EOF
+  chmod 755 "$prefix/bin/$name"
+done
+
+command -v java >/dev/null 2>&1 || echo "TLA+ tools installed; they need Java 11+ on PATH"
+{{ end -}}

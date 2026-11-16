@@ -163,33 +163,26 @@ Within a category, files are loaded in alphabetical order based on their full pa
 The [home/.chezmoidata/packages.yaml](home/.chezmoidata/packages.yaml) file contains
 the list of packages to install.
 
-The file is structured as follows:
+It is one list with one line per package:
 
 ```yaml
 packages:
-  unixLike:                      # packages installed on all Unix-like systems
-    - git                        # if only the package name is provided, it is will be searhed in every supported package manager
-    - name: tldr                 # we can restrict the supported package managers
-      brew: tlrc        
-      cargo: tlrc
-    - name: fd                   # we can provide different names for different package managers
-      brew: fd
-      apt: fd-find
-      apk: fd
-    - name: top-alternative      # or even different packages
-      brew: bottom
-      apt: btop
-      apk: btop
-  macos:                         # packages installed only on MacOs
-    brews:                       # brew packages
-      - gpg
-    casks:                       # cask packages
-      - 1password@beta
-    appstore:                    # appstore packages
-      - name: Amphetamine
-        id: 937984704
-
+  - bat                                     # CLI tool, same name in every package manager
+  - { name: fd, apt: fd-find }              # CLI tool with another name per package manager
+  - { name: tldr, brew: tlrc, cargo: tlrc } # only these package managers
+  - { name: gh, roles: [workstation] }      # limit to roles (default: workstation, worker, container)
+  - { name: nomad, tap: hashicorp/tap }     # Homebrew formula from a tap; the tap gets trusted
+  - { cask: ghostty }                       # macOS GUI app, workstation only
+  - { mas: 937984704, name: Amphetamine }   # Mac App Store app, workstation only
 ```
+
+The rule for roles: build and dev tools go everywhere, everything else is
+workstation only. The agent role installs nothing. `tests/roles.sh` rejects
+unknown keys and roles.
+
+The TLA+ command-line tools (`tlc`, `sany`, `pcal`) aren't in Homebrew. A
+separate script downloads a pinned `tla2tools.jar` into the Homebrew prefix
+(so the Citadel agent user shares it) and needs Java 11+.
 
 The install script tries to use package managers in the following order:
 
@@ -205,8 +198,8 @@ is installed.
 
 On Linux, every package is installed one-by-one.
 
-On MacOs, `brew bundle` is used to install the packages. No `Brewfile` is generated,
-the package list is passed as a heredoc.
+On MacOs, `brew bundle` installs the packages from a Brewfile that the script
+generates into `~/.dotfiles/homebrew/Brewfile`.
 
 ### Package Manager Search Pages
 

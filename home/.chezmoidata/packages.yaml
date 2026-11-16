@@ -1,124 +1,132 @@
-# Every unixLike package installs on the roles that install packages
-# (workstation, worker, container), unless `roles` narrows it down.
-# The agent role installs nothing.
+# One list, one line per package:
+#   - name                           CLI tool; brew, apt, apk and cargo use the same name
+#   - { name: fd, apt: fd-find }     CLI tool with another name per package manager
+#   - { name: gh, roles: [...] }     limit to roles (default: workstation, worker, container)
+#   - { name: x, tap: owner/tap }    Homebrew formula from a tap; the tap gets trusted
+#   - { cask: ghostty }              macOS GUI app, workstation only
+#   - { mas: 497799835, name: X }    Mac App Store app, workstation only
+# Rule: build and dev tools go everywhere, everything else is workstation only.
+# The agent role installs nothing; it uses the worker's Homebrew.
 packages:
-  unixLike:
-    - bat               # better cat
-    - curl
-    - direnv            # set env vars based on current folder
-    - eza               # better ls
-    - fzf               # fuzzy finder
-    - git
-    - glow              # md terminal renderer
-    - jq                # json processor
-    - ripgrep           # better grep
-    - sd                # simpler sed
-    - name: viddy       # better watch
-      roles: [workstation, container]
-    - wget
-    - yq                # yaml, json, and csv processor
-    - tmux
-    - tmuxinator
-    - name: mosh        # resilient ssh
-      roles: [workstation, container]
-    - neovim
-    - name: asdf        # virtual environment manager
-      brew: asdf
-    - name: delta       # diff tool
-      brew: git-delta
-      cargo: git-delta
-    - name: fd          # simpler find
-      brew: fd
-      apt: fd-find
-      apk: fd
-    - name: git-lfs
-      brew: git-lfs
-    - name: tldr        # simpler man pages
-      brew: tlrc
-      cargo: tlrc
-    - name: top-alternative
-      brew: bottom
-      apt: btop
-      apk: btop
-    - name: zoxide      # better cd
-      brew: zoxide
-      apk: zoxide
-      cargo: zoxide
-  macos:
-    brews:
-      - act             # run github actions locally
-      - cookiecutter
-      - dust            # shows disk usage
-      - gh              # github cli
-      - gpg
-      - gradle
-      - httpie          # http cli client
-      - mas             # install Mac Appstore apps from the cli
-      - maven
-      - netlify-cli
-      - scrcpy          # mirror android screen
-      - thefuck         # corrects your previous command
-    casks:
-      - 1password-cli
-      - 1password@beta
-      - alt-tab
-      - android-platform-tools
-      - audacity
-      - busycal
-      - calibre
-      - capcut
-      - cheatsheet
-      - clocker
-      - devpod
-      - devtoys
-      - docker-desktop
-      - excalidrawz
-      - font-fira-code-nerd-font
-      - font-google-sans-code
-      - font-inconsolata-nerd-font
-      - font-jetbrains-mono
-      - font-meslo-lg-nerd-font
-      - ghostty
-      - gimp
-      - google-chrome
-      - google-drive
-      - grammarly-desktop
-      - guitar-pro
-      - iina
-      - inkscape
-      - iterm2
-      - jetbrains-toolbox
-      - karabiner-elements
-      - lightburn
-      - mac-mouse-fix
-      - meetingbar
-      - mimestream
-      - miro
-      - nordvpn
-      - obsidian
-      - raycast
-      - reader
-      - shortcat
-      - shottr
-      - slack
-      - stats
-      - todoist-app
-      - visual-studio-code
-      - vlc
-      - zed
-      - zoom
-    appstore:
-      - name: 1Password for Safari
-        id: 1569813296
-      - name: AdGuard for Safari
-        id: 1440147259
-      - name: Amazon Kindle
-        id: 302584613
-      - name: Amphetamine
-        id: 937984704
-      - name: Folder Tidy
-        id: 486626129
-      - name: Grammarly for Safari
-        id: 1462114288
-#      - name: Numbers
-#        id: 409203825
+  # --- CLI: build and dev, everywhere
+  - agda                                            # proof assistant
+  - { name: asdf, brew: asdf }                      # runtime version manager
+  - bat                                             # better cat
+  - curl
+  - { name: delta, brew: git-delta, cargo: git-delta }  # diff tool
+  - direnv                                          # env vars per folder
+  - eza                                             # better ls
+  - { name: fd, brew: fd, apt: fd-find, apk: fd }   # simpler find
+  - fzf                                             # fuzzy finder
+  - git
+  - { name: git-lfs, brew: git-lfs }
+  - glow                                            # markdown renderer
+  - gradle
+  - jq                                              # json processor
+  - just                                            # task runner
+  - maven
+  - neovim
+  - pandoc                                          # document converter
+  - ripgrep                                         # better grep
+  - sd                                              # simpler sed
+  - { name: tldr, brew: tlrc, cargo: tlrc }         # simpler man pages
+  - tmux
+  - tmuxinator
+  - { name: top-alternative, brew: bottom, apt: btop, apk: btop }
+  - watchexec                                       # run commands on file changes
+  - wget
+  - yq                                              # yaml, json and csv processor
+  - { name: zoxide, brew: zoxide, apk: zoxide, cargo: zoxide }  # better cd
+
+  # --- CLI: workstation only
+  - { name: act, roles: [workstation] }             # run GitHub Actions locally
+  - { name: cloudflared, roles: [workstation] }
+  - { name: consul, tap: hashicorp/tap, roles: [workstation] }
+  - { name: container, roles: [workstation] }       # Apple container CLI
+  - { name: cookiecutter, roles: [workstation] }
+  - { name: dust, roles: [workstation] }            # disk usage
+  - { name: flux, tap: fluxcd/tap, roles: [workstation] }
+  - { name: gh, roles: [workstation] }              # GitHub CLI
+  - { name: gpg, roles: [workstation] }
+  - { name: httpie, roles: [workstation] }          # HTTP client
+  - { name: mas, roles: [workstation] }             # App Store CLI
+  - { name: mosh, roles: [workstation] }            # resilient ssh
+  - { name: netlify-cli, roles: [workstation] }
+  - { name: nomad, tap: hashicorp/tap, roles: [workstation] }
+  - { name: scrcpy, roles: [workstation] }          # mirror an Android screen
+  - { name: thefuck, roles: [workstation] }         # correct the previous command
+  - { name: viddy, roles: [workstation] }           # better watch
+
+  # --- GUI apps (casks)
+  - { cask: 1password-cli }
+  - { cask: 1password@beta }
+  - { cask: alt-tab }
+  - { cask: android-platform-tools }
+  - { cask: audacity }
+  - { cask: basictex }
+  - { cask: busycal }
+  - { cask: calibre }
+  - { cask: capcut }
+  - { cask: cheatsheet }
+  - { cask: clocker }
+  - { cask: devpod }
+  - { cask: devtoys }
+  - { cask: discord }
+  - { cask: docker-desktop }
+  - { cask: espanso }
+  - { cask: excalidrawz }
+  - { cask: font-eb-garamond }
+  - { cask: font-fira-code-nerd-font }
+  - { cask: font-google-sans-code }
+  - { cask: font-inconsolata }
+  - { cask: font-inconsolata-nerd-font }
+  - { cask: font-jetbrains-mono }
+  - { cask: font-liberation }
+  - { cask: font-meslo-lg-nerd-font }
+  - { cask: ghostty }
+  - { cask: gimp }
+  - { cask: google-chrome }
+  - { cask: google-drive }
+  - { cask: grammarly-desktop }
+  - { cask: ijhttp }
+  - { cask: iina }
+  - { cask: inkscape }
+  - { cask: iterm2 }
+  - { cask: jetbrains-toolbox }
+  - { cask: karabiner-elements }
+  - { cask: lightburn }
+  - { cask: linear }
+  - { cask: mac-mouse-fix }
+  - { cask: meetingbar }
+  - { cask: mimestream }
+  - { cask: miro }
+  - { cask: nordvpn }
+  - { cask: obs }
+  - { cask: obsidian }
+  - { cask: raycast }
+  - { cask: reader }
+  - { cask: shortcat }
+  - { cask: shottr }
+  - { cask: slack }
+  - { cask: thaw@beta }
+  - { cask: todoist-app }
+  - { cask: viber }
+  - { cask: visual-studio-code }
+  - { cask: vlc }
+  - { cask: zed }
+  - { cask: zoom }
+
+  # --- Mac App Store
+  - { mas: 1569813296, name: 1Password for Safari }
+  - { mas: 1440147259, name: AdGuard for Safari }
+  - { mas: 302584613, name: Amazon Kindle }
+  - { mas: 937984704, name: Amphetamine }
+  - { mas: 1453365242, name: Brother P-touch Editor }
+  - { mas: 1545870783, name: Color Picker }
+  - { mas: 6449092750, name: Easy Streaming }
+  - { mas: 486626129, name: Folder Tidy }
+  - { mas: 1462114288, name: Grammarly for Safari }
+  - { mas: 361304891, name: Numbers }
+  - { mas: 6469021132, name: PDFgear }
+  - { mas: 1451685025, name: WireGuard }
+  - { mas: 497799835, name: Xcode }

@@ -2,32 +2,53 @@
 #!/usr/bin/env sh
 
 {{ $role := .role -}}
+{{ $workstation := eq .role "workstation" -}}
+{{ $brews := list -}}
+{{ $taps := list -}}
+{{ $casks := list -}}
+{{ $apps := list -}}
+{{ range .packages -}}
+  {{ $pkg := . -}}
+  {{ if eq "string" (printf "%T" .) -}}
+    {{ $pkg = dict "name" . -}}
+  {{ end -}}
+  {{ if hasKey $pkg "cask" -}}
+    {{ if $workstation }}{{ $casks = append $casks $pkg.cask }}{{ end -}}
+  {{ else if hasKey $pkg "mas" -}}
+    {{ if $workstation }}{{ $apps = append $apps $pkg }}{{ end -}}
+  {{ else if or (not (hasKey $pkg "roles")) (has $role $pkg.roles) -}}
+    {{ if hasKey $pkg "tap" -}}
+      {{ $taps = append $taps $pkg.tap -}}
+      {{ $brews = append $brews (printf "%s/%s" $pkg.tap $pkg.name) -}}
+    {{ else if hasKey $pkg "brew" -}}
+      {{ $brews = append $brews $pkg.brew -}}
+    {{ else if not (or (hasKey $pkg "apt") (hasKey $pkg "apk") (hasKey $pkg "cargo") (hasKey $pkg "linuxCommand")) -}}
+      {{ $brews = append $brews $pkg.name -}}
+    {{ end -}}
+  {{ end -}}
+{{ end -}}
+
 brew_config_path=$HOME/.dotfiles/homebrew
 brewfile_path=$brew_config_path/Brewfile
 
+# Homebrew only loads formulae from trusted third-party taps
+{{ range uniq $taps -}}
+brew tap {{ . }} && { brew trust --tap {{ . }} || true; }
+{{ end }}
 mkdir -p $brew_config_path
 cat > $brewfile_path <<EOF
-{{ range .packages.unixLike -}}
-  {{- if eq "string" (printf "%T" .) -}}
-brew {{ . | quote }}
-  {{- else if and (hasKey . "roles") (not (has $role .roles)) -}}
-  {{- else if (hasKey . "brew") -}}
-brew {{ .brew | quote }}
-  {{- else if not (or (hasKey . "apt") (hasKey . "apk") (hasKey . "cargo") (hasKey . "linuxCommand")) -}}
-brew {{ .name | quote }}
-  {{- end }}
+{{ range uniq $taps -}}
+tap {{ . | quote }}
 {{ end -}}
-{{- range .packages.macos.brews -}}
+{{ range $brews -}}
 brew {{ . | quote }}
 {{ end -}}
-{{- if eq .role "workstation" -}}
-{{- range .packages.macos.casks -}}
+{{ range $casks -}}
 cask {{ . | quote }}
 {{ end -}}
-{{- range .packages.macos.appstore -}}
-mas {{ .name | quote }}, id: {{ .id }}
-{{ end }}
-{{- end }}
+{{ range $apps -}}
+mas {{ .name | quote }}, id: {{ .mas }}
+{{ end -}}
 EOF
 
 brew bundle --file=$brewfile_path
