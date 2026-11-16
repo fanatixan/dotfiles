@@ -9,13 +9,20 @@ esac
 {{ end -}}
 source $HOME/.shellrc
 
-source_all_dotfiles() {
-  local filename=$1 f files restore
+# byte-order glob, as on macOS: glibc locales (en_US.UTF-8) ignore the _ of
+# _zsh, which then loads after the folders that need its functions
+dotfiles_list() {
+  local LC_ALL=C restore
   # glob options only while listing, so they don't leak into the shell
   restore=$(shopt -p nullglob globstar 2>/dev/null)
   shopt -s nullglob globstar 2>/dev/null
-  files=($DOTFILES_FOLDER/**/$filename)
+  files=($DOTFILES_FOLDER/**/$1)
   eval "$restore"
+}
+
+source_all_dotfiles() {
+  local f files
+  dotfiles_list "$1"
   for f in "${files[@]}"
   do
     source $f

@@ -3,7 +3,9 @@
 # to download) into a throwaway HOME, then starts every kind of zsh and bash
 # shell from a clean environment. Each shell must have the env phase exactly
 # once (no PATH duplicates, also when nested) and the interactive phase only
-# when interactive. Needs zsh and bash 4+ on PATH.
+# when interactive. Needs zsh and bash 4+ on PATH. SHELLS_LOCALE runs the
+# shells in that locale (CI: en_US.UTF-8, whose glibc collation differs from
+# macOS); unexpected stderr, such as a command not found, fails the check.
 
 set -u
 
@@ -28,6 +30,7 @@ run() {
   label=$1
   shift
   out=$(cd "$home" && env -i HOME="$home" PATH=/usr/bin:/bin TERM=dumb \
+    ${SHELLS_LOCALE:+LANG="$SHELLS_LOCALE"} \
     ZSH_BIN="$zsh_bin" BASH_BIN="$bash_bin" "$@" 2>"$work/stderr")
   echo "$out"
 }
@@ -43,7 +46,7 @@ check() { # check <label> <output> <expected marker count> <aliases: yes|no>
     no:*) echo "FAIL [$label] interactive phase ran in a non-interactive shell"; failures=$((failures + 1)) ;;
   esac
   [ -s "$work/stderr" ] && grep -v -e 'compinit' -e 'No such widget' -e 'job control' -e 'terminal process group' -e 'command not found: \(brew\|direnv\|zoxide\)' -e '\(brew\|direnv\|zoxide\): command not found' "$work/stderr" | grep -q . &&
-    { echo "WARN [$label] stderr:"; sed 's/^/  /' "$work/stderr"; }
+    { echo "FAIL [$label] stderr:"; sed 's/^/  /' "$work/stderr"; failures=$((failures + 1)); }
 }
 
 # aliases=1 when general/aliases defined `ll` (zsh has built-in aliases, so no count)

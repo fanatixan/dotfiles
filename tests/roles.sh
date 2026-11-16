@@ -77,6 +77,7 @@ contains "runtimes" "$out" 'uv python install --default 3.15'
 contains "runtimes" "$out" 'global="$HOME/.tool-versions"'
 no_target .tool-versions
 no_target .zshenv
+no_target .hushlogin
 contains "ghostty" "$(render dot_config/ghostty/config.tmpl)" 'ssh-terminfo'
 contains "zsh plugins" "$(render "$zplug")" 'plugins/gh'
 out=$(render dot_gitconfig.tmpl)
@@ -100,6 +101,7 @@ contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
 empty "cargo script" "$(render "$cargo")"
 contains "zsh script" "$(render "$zsh")" 'sudo usermod -s "$zsh_path"'
 has_target .zshenv
+has_target .hushlogin
 contains ".zshenv" "$(render dot_zshenv.tmpl)" 'DOTFILES_ENV_LOADED'
 out=$(render "$rt")
 contains "runtimes" "$out" 'export ASDF_DATA_DIR=/opt/asdf'

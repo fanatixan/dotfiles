@@ -2,12 +2,19 @@ setopt CSH_NULL_GLOB
 
 source $HOME/.shellrc
 
+# byte-order glob, as on macOS: glibc locales (en_US.UTF-8) ignore the _ of
+# _zsh, which then loads after the folders that need its functions
+dotfiles_list() {
+  local LC_ALL=C
+  reply=($DOTFILES_FOLDER/**/$1(N))
+}
+
 source_all_dotfiles() {
-  filename=$1
-  for f in $DOTFILES_FOLDER/**/$filename(N)
-  do
+  local reply f
+  dotfiles_list $1
+  for f in $reply; do
     source $f
-  done  
+  done
 }
 
 {{ if eq .chezmoi.os "linux" -}}

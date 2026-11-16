@@ -5,9 +5,12 @@
 # lets child processes inherit the environment instead of loading it again.
 if [[ -z $DOTFILES_ENV_LOADED ]]; then
   source $HOME/.shellrc
-  for f in $DOTFILES_FOLDER/**/paths(N); do
-    source $f
-  done
+  () { # byte-order glob, as on macOS: glibc locales ignore the _ of _zsh
+    local LC_ALL=C f
+    for f in $DOTFILES_FOLDER/**/paths(N); do
+      source $f
+    done
+  }
   export DOTFILES_ENV_LOADED=1
 fi
 {{ end -}}

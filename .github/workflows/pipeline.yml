@@ -31,6 +31,17 @@ jobs:
       - run: brew install chezmoi bash
       - run: tests/roles.sh
       - run: tests/shells.sh
+  # glibc collation (en_US.UTF-8) sorts _zsh after python; macOS doesn't
+  verify-linux-shells:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y zsh locales
+          sudo locale-gen en_US.UTF-8
+          sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+      - run: PATH="$HOME/.local/bin:$PATH" SHELLS_LOCALE=en_US.UTF-8 tests/shells.sh
   verify-alpine-installation:
     runs-on: ubuntu-latest
     steps:

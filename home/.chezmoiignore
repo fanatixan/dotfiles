@@ -3,6 +3,8 @@
 {{- if ne .chezmoi.os "linux" }}
 # the once-per-session env phase in .zshenv is Linux only (macOS path_helper)
 .zshenv
+# Linux: no MOTD or "Last login" banner on login
+.hushlogin
 {{- end }}
 
 {{- if ne .role "workstation" }}
