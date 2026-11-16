@@ -45,7 +45,8 @@ check() { # check <label> <output> <expected marker count> <aliases: yes|no>
     no:*"|aliases=0") ;;
     no:*) echo "FAIL [$label] interactive phase ran in a non-interactive shell"; failures=$((failures + 1)) ;;
   esac
-  [ -s "$work/stderr" ] && grep -v -e 'compinit' -e 'No such widget' -e 'job control' -e 'terminal process group' -e 'command not found: \(brew\|direnv\|zoxide\)' -e '\(brew\|direnv\|zoxide\): command not found' "$work/stderr" | grep -q . &&
+  # bash -i without a terminal warns about job control; nothing else is expected
+  [ -s "$work/stderr" ] && grep -vE 'job control|terminal process group' "$work/stderr" | grep -q . &&
     { echo "FAIL [$label] stderr:"; sed 's/^/  /' "$work/stderr"; failures=$((failures + 1)); }
 }
 

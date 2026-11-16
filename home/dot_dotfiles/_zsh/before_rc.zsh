@@ -4,7 +4,9 @@ mkdir -p "$ZSH_CACHE_DIR"
 # zsh-autocomplete (loaded by antidote) runs compinit itself, after its
 # Completions folder is on fpath. An earlier compinit leaves its functions
 # undefined: "command not found: _autocomplete__unambiguous" on Tab.
+# Without it (the agent): -i skips folders compaudit calls insecure, such as
+# the worker's Homebrew, instead of asking, which aborts without a terminal.
 if [[ ! -f $DOTFILES_FOLDER/_zsh/antidote/rc.zsh ]]; then
   autoload -Uz compinit
-  compinit
+  compinit -i
 fi
