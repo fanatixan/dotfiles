@@ -114,7 +114,8 @@ try_install_brew() {
     info "Installing build tools" && \
     brew install gcc && \
     \
-    brew doctor || info "Failed to install Homebrew, going on"
+    { brew doctor || info "brew doctor reported warnings, going on"; } || \
+    info "Failed to install Homebrew, going on"
   fi
 }
 
@@ -146,6 +147,7 @@ try_install_git
 try_install_brew
 install_chezmoi
 init_chezmoi
-chezmoi doctor
+# doctor is diagnostic only: it fails on CI runners (cross-device hardlinks, GitHub rate limits)
+chezmoi doctor || info "chezmoi doctor reported problems, going on"
 chezmoi apply
 [ -n "$dotfiles_source" ] || chezmoi update

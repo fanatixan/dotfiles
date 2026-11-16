@@ -34,12 +34,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jirutka/setup-alpine@v1
-        with:
-          branch: v3.15
-      - run: target_env=container DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
-      - run: test -f $HOME/.dotfiles/git/aliases
-      # - run: eza
+      # a plain Alpine container: setup-alpine broke on the runner's sudo, and
+      # its steps ran on the Ubuntu host anyway
+      - run: |
+          docker run --rm -v "$PWD:/src:ro" alpine:3.22 sh -euc '
+            apk add --no-cache curl git sudo
+            adduser -D dev
+            echo "dev ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/dev
+            su dev -c "cd ~ && target_env=container DOTFILES_SOURCE=/src sh /src/init.sh"
+            su dev -c "test -f ~/.dotfiles/git/aliases"
+          '
   verify-ubuntu-installation:
     runs-on: ubuntu-latest
     steps:
