@@ -1,5 +1,8 @@
 # reference: https://antidote.sh/#plugins-file
 
+# first: it runs compinit, and queues the compdef calls of the plugins below
+marlonrichert/zsh-autocomplete
+
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/fzf
 {{ if eq .role "workstation" -}}
@@ -17,8 +20,6 @@ ohmyzsh/ohmyzsh path:plugins/pip
 {{ end -}}
 
 zsh-users/zsh-syntax-highlighting
-
-marlonrichert/zsh-autocomplete
 
 toku-sa-n/zsh-dot-up                 # navigate to parent with multiple dots
 

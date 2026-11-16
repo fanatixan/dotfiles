@@ -71,6 +71,12 @@ jobs:
       - run: sudo dpkg -r --force-depends unzip jq
       - run: target_env=worker DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
       - run: test -x /home/linuxbrew/.linuxbrew/bin/unzip
+      # zsh-autocomplete must run compinit itself: an earlier compinit leaves its
+      # functions undefined from the second shell on (the first clones plugins)
+      - run: |
+          export TERM=xterm-256color
+          zsh -i -c '.autocomplete__compinit:precmd' >/dev/null 2>&1 || true
+          zsh -i -c '.autocomplete__compinit:precmd; (( $+functions[_autocomplete__unambiguous] ))'
       - run: test -f $HOME/.dotfiles/git/aliases
       - run: test ! -e $HOME/.dotfiles/1password
       - run: /home/linuxbrew/.linuxbrew/bin/jq --version

@@ -1,5 +1,9 @@
 {{- /* Linux only: on macOS, path_helper in /etc/zprofile would reorder a PATH set here. */ -}}
 {{ if eq .chezmoi.os "linux" -}}
+# Ubuntu's /etc/zsh/zshrc runs compinit unless told not to; zsh-autocomplete
+# (or _zsh/before_rc.zsh without it) runs it instead
+skip_global_compinit=1
+
 # Every zsh reads this first: login, interactive, scripts and `zsh -c`.
 # The env phase (the `paths` files) runs once per session: the exported guard
 # lets child processes inherit the environment instead of loading it again.
