@@ -33,7 +33,6 @@ The solution relies on [`chezmoi`](https://www.chezmoi.io/).
   - Aliases for installed packages
 - Install [packages](#installed-packages) with `brew`, `apt`, or `apk` (whichever is available)
 - For MacOs:
-  - Configure daily autoupdate for Homebrew
   - Enable `sudo` with Touch ID
   - Install Java, NodeJS, and Python with [`asdf`](https://asdf-vm.com/)
   - Configure SSH with public keys and [1Password](https://1password.com/)

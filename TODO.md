@@ -3,7 +3,6 @@
 ## General
 
 - [ ] Add regular cleanup script
-- [ ] Migrate from brew autoupdate to a cron job using the Brewfile
 - [ ] Mark packages as physical computer only
 - [ ] Add an encryption tool with helper scripts
 - [ ] Add scripts to update `asdf` version list
