@@ -1,5 +1,10 @@
 {{- /* Role-based exclusions. OS and tool conditions stay in the subfolder ignores. */ -}}
 
+{{- if ne .chezmoi.os "linux" }}
+# the once-per-session env phase in .zshenv is Linux only (macOS path_helper)
+.zshenv
+{{- end }}
+
 {{- if ne .role "workstation" }}
 # 1Password runs on the workstation only
 .dotfiles/1password

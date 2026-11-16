@@ -168,6 +168,25 @@ Files are loaded in the following order:
 
 Note that for a non-interactive shell, only `paths` files are loaded.
 
+### Shell Startup on Linux
+
+On Linux (the Citadel box, containers) every shell loads the same dotfiles,
+and each part exactly once:
+
+- **Env phase** (`paths` files): `~/.zshenv` runs it for every zsh (login,
+  interactive, scripts, `zsh -c`), `~/.bashrc` for bash. An exported guard
+  (`DOTFILES_ENV_LOADED`) skips it in child processes, which inherit the
+  environment, so nested shells and tmux panes don't duplicate `PATH`.
+- **Interactive phase** (everything else): once per interactive shell from
+  `~/.zshrc` or `~/.bashrc`. Aliases and functions can't be inherited.
+- **zsh is the worker's login shell**, so SSH commands, `su` and tools that
+  start `$SHELL` go through `~/.zshenv`. Create the agent user with
+  `useradd -s /usr/bin/zsh`.
+
+macOS keeps loading the `paths` files from `~/.zshrc`: `path_helper` in
+`/etc/zprofile` would reorder a `PATH` set in `~/.zshenv`.
+`tests/shells.sh` starts every kind of shell and checks both phases.
+
 Within a category, files are loaded in alphabetical order based on their full path.
 
 ## Installed Packages

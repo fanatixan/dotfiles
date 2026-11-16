@@ -10,7 +10,11 @@ source_all_dotfiles() {
   done  
 }
 
+{{ if eq .chezmoi.os "linux" -}}
+# the env phase already ran in .zshenv (once per session)
+{{- else -}}
 source_all_dotfiles paths
+{{- end }}
 
 if is_interactive; then
   source_all_dotfiles completion.sh

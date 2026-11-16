@@ -13,5 +13,15 @@ if ! command -v zsh >/dev/null 2>&1; then
     echo "Couldn't install zsh"
   fi
 fi
+{{- if eq .role "worker" }}
+
+# zsh as the login shell, so SSH commands, su and tools that start $SHELL
+# (Claude Code) load .zshenv; usermod needs no password prompt, unlike chsh
+zsh_path=$(command -v zsh)
+if [ "$(getent passwd "$(id -un)" | cut -d: -f7)" != "$zsh_path" ]; then
+  grep -qx "$zsh_path" /etc/shells || echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+  sudo usermod -s "$zsh_path" "$(id -un)"
+fi
+{{- end }}
 
 {{ end -}}

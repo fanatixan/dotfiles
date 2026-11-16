@@ -73,6 +73,7 @@ contains "runtimes" "$out" 'asdf latest gradle'
 contains "runtimes" "$out" 'uv python install --default 3.15'
 contains "runtimes" "$out" 'global="$HOME/.tool-versions"'
 no_target .tool-versions
+no_target .zshenv
 contains "ghostty" "$(render dot_config/ghostty/config.tmpl)" 'ssh-terminfo'
 contains "zsh plugins" "$(render "$zplug")" 'plugins/gh'
 out=$(render dot_gitconfig.tmpl)
@@ -94,7 +95,9 @@ for p in mosh viddy gh act nomad cloudflared ghostty Xcode gradle maven; do
 done
 contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
 empty "cargo script" "$(render "$cargo")"
-contains "zsh script" "$(render "$zsh")" 'zsh'
+contains "zsh script" "$(render "$zsh")" 'sudo usermod -s "$zsh_path"'
+has_target .zshenv
+contains ".zshenv" "$(render dot_zshenv.tmpl)" 'DOTFILES_ENV_LOADED'
 out=$(render "$rt")
 contains "runtimes" "$out" 'export ASDF_DATA_DIR=/opt/asdf'
 contains "runtimes" "$out" 'global=/opt/asdf/tool-versions'
@@ -155,6 +158,8 @@ out=$(render "$linux_pkgs")
 contains "linux packages" "$out" 'install pandoc'
 lacks "linux packages" "$out" 'install mosh'
 contains "cargo script" "$(render "$cargo")" 'rustup'
+
+lacks "zsh script" "$(render "$zsh")" 'usermod'
 
 # --- macOS container (CI): no workstation-only packages ---------------------
 use_role container darwin

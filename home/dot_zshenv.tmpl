@@ -1,0 +1,13 @@
+{{- /* Linux only: on macOS, path_helper in /etc/zprofile would reorder a PATH set here. */ -}}
+{{ if eq .chezmoi.os "linux" -}}
+# Every zsh reads this first: login, interactive, scripts and `zsh -c`.
+# The env phase (the `paths` files) runs once per session: the exported guard
+# lets child processes inherit the environment instead of loading it again.
+if [[ -z $DOTFILES_ENV_LOADED ]]; then
+  source $HOME/.shellrc
+  for f in $DOTFILES_FOLDER/**/paths(N); do
+    source $f
+  done
+  export DOTFILES_ENV_LOADED=1
+fi
+{{ end -}}

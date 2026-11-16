@@ -28,8 +28,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - run: brew install chezmoi
+      - run: brew install chezmoi bash
       - run: tests/roles.sh
+      - run: tests/shells.sh
   verify-alpine-installation:
     runs-on: ubuntu-latest
     steps:

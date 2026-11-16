@@ -15,9 +15,6 @@
 
 ## Linux
 
-- [ ] make zsh the default shell
-  - `chsh -s $(which zsh)`
-  - Problem: `chsh` needs credentials
 - [ ] install zoxide
 
 ## Pipeline
