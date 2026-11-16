@@ -78,6 +78,7 @@ jobs:
       # functions undefined from the second shell on (the first clones plugins)
       - run: |
           export TERM=xterm-256color
+          zsh -c 'autoload -Uz compaudit; compaudit' || true  # folders compinit calls insecure
           zsh -i -c '.autocomplete__compinit:precmd' >/dev/null 2>&1 || true
           zsh -i -c '.autocomplete__compinit:precmd; (( $+functions[_autocomplete__unambiguous] ))'
       - run: test -f $HOME/.dotfiles/git/aliases
