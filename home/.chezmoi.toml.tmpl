@@ -1,0 +1,19 @@
+{{- /*
+  Machine role, asked once and kept in ~/.config/chezmoi/chezmoi.toml:
+    workstation  personal machine with GUI apps, SSH keys and 1Password (Mac)
+    worker       admin login on the Citadel box: lean CLI tools, installs packages
+    agent        agent user on the Citadel box: tool config only, installs nothing
+    container    dev container (dormant): CLI tools, no secrets
+  Non-interactive: chezmoi init --promptChoice "Machine role=worker"
+  Old configs with physical_computer default to workstation or container.
+*/ -}}
+{{- $roles := list "workstation" "worker" "agent" "container" -}}
+{{- $default := "workstation" -}}
+{{- if and (hasKey . "physical_computer") (not .physical_computer) -}}
+{{-   $default = "container" -}}
+{{- end -}}
+{{- $role := promptChoiceOnce . "role" "Machine role" $roles $default -}}
+[onepassword]
+  prompt = false
+[data]
+  role = {{ $role | quote }}

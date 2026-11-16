@@ -11,7 +11,12 @@
 	navigate = true
 
 [user]
+{{- if eq .role "agent" }}
+	# box-only key, generated on the Citadel box and registered on GitHub as a signing key
+	signingkey = ~/.ssh/id_ed25519_signing.pub
+{{- else }}
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHlr3NBIFhX1/GtnLT9QQtL+8fIvBSvSzEoHf3LMR2Li
+{{- end }}
 	name = Attila-Fejer
 	email = attila@fejer.io
 [gpg]

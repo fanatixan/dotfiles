@@ -1,3 +1,6 @@
+# Every unixLike package installs on the roles that install packages
+# (workstation, worker, container), unless `roles` narrows it down.
+# The agent role installs nothing.
 packages:
   unixLike:
     - bat               # better cat
@@ -7,13 +10,17 @@ packages:
     - fzf               # fuzzy finder
     - git
     - glow              # md terminal renderer
+    - jq                # json processor
     - ripgrep           # better grep
     - sd                # simpler sed
-    - viddy             # better watch
+    - name: viddy       # better watch
+      roles: [workstation, container]
     - wget
+    - yq                # yaml, json, and csv processor
     - tmux
     - tmuxinator
-    - mosh
+    - name: mosh        # resilient ssh
+      roles: [workstation, container]
     - neovim
     - name: asdf        # virtual environment manager
       brew: asdf
@@ -51,7 +58,6 @@ packages:
       - netlify-cli
       - scrcpy          # mirror android screen
       - thefuck         # corrects your previous command
-      - yq              # yaml, json, and csv processor
     casks:
       - 1password-cli
       - 1password@beta

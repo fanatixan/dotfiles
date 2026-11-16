@@ -1,4 +1,5 @@
-{{ if eq .chezmoi.os "linux" -}}
+{{- /* cargo is the last-resort installer; only containers without brew need it */ -}}
+{{ if and (eq .chezmoi.os "linux") (eq .role "container") -}}
 #!/usr/bin/env sh
 
 if ! command -v cargo >/dev/null 2>&1; then

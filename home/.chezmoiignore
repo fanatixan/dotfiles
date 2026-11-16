@@ -1,0 +1,27 @@
+{{- /* Role-based exclusions. OS and tool conditions stay in the subfolder ignores. */ -}}
+
+{{- if ne .role "workstation" }}
+# 1Password runs on the workstation only
+.dotfiles/1password
+{{- end }}
+
+{{- if or (eq .role "container") (eq .role "agent") }}
+# no SSH keys or host config in containers or for agents
+.ssh
+{{- end }}
+
+{{- if eq .role "agent" }}
+# agents are offline and non-interactive: no installers, no interactive extras
+.dotfiles/_zsh/run_once_before_00_install_zsh.sh
+.dotfiles/_zsh/antidote
+.dotfiles/_zsh/p10k
+.p10k.zsh
+.vimrc
+.vim
+.vim/**
+.config/nvim
+.config/tmuxinator
+.config/zellij
+.config/ghostty
+cheatsheets
+{{- end }}

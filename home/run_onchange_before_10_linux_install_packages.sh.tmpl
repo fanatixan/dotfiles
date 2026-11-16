@@ -1,14 +1,10 @@
-#!/usr/bin/env sh
-
-{{ $linux := eq .chezmoi.os "linux" -}}
-
-{{ define "install" -}}
+{{- define "install" -}}
   {{ if and (lookPath "brew") (hasKey . "brew") -}}
     brew install {{ .brew }}
   {{ else if and (lookPath "apt") (hasKey . "apt") -}}
     sudo apt install -y {{ .apt }}
   {{ else if and (lookPath "apk") (hasKey . "apk") -}}
-    sudo apk add -y {{ .apt }}
+    sudo apk add {{ .apk }}
   {{ else if (hasKey . "linuxCommand") -}}
     {{ .linuxCommand }}
   {{ else if and (lookPath "cargo") (hasKey . "cargo") -}}
@@ -18,12 +14,21 @@
   {{ end -}}
 {{ end -}}
 
-{{ if $linux -}}
-  {{ range .packages.unixLike -}}
-    {{ if eq "string" (printf "%T" .) -}}
-      {{ template "install" (dict "name" . "brew" . "apt" . "apk" . "cargo" .) }}
-    {{ else -}}
-      {{ template "install" . }}
-    {{ end }}
+{{ if and (eq .chezmoi.os "linux") (ne .role "agent") -}}
+#!/usr/bin/env sh
+
+{{ $role := .role -}}
+
+{{ range .packages.unixLike -}}
+  {{ $pkg := . -}}
+  {{ if eq "string" (printf "%T" .) -}}
+    {{ $pkg = dict "name" . -}}
   {{ end -}}
+  {{ if or (not (hasKey $pkg "roles")) (has $role $pkg.roles) -}}
+    {{ if not (or (hasKey $pkg "brew") (hasKey $pkg "apt") (hasKey $pkg "apk") (hasKey $pkg "cargo") (hasKey $pkg "linuxCommand")) -}}
+      {{ $pkg = merge (dict "brew" $pkg.name "apt" $pkg.name "apk" $pkg.name "cargo" $pkg.name) $pkg -}}
+    {{ end -}}
+    {{ template "install" $pkg }}
+  {{ end -}}
+{{ end -}}
 {{ end -}}

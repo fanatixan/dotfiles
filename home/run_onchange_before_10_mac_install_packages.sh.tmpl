@@ -1,6 +1,7 @@
 {{ if eq .chezmoi.os "darwin" -}}
 #!/usr/bin/env sh
 
+{{ $role := .role -}}
 brew_config_path=$HOME/.dotfiles/homebrew
 brewfile_path=$brew_config_path/Brewfile
 
@@ -9,14 +10,17 @@ cat > $brewfile_path <<EOF
 {{ range .packages.unixLike -}}
   {{- if eq "string" (printf "%T" .) -}}
 brew {{ . | quote }}
+  {{- else if and (hasKey . "roles") (not (has $role .roles)) -}}
   {{- else if (hasKey . "brew") -}}
 brew {{ .brew | quote }}
+  {{- else if not (or (hasKey . "apt") (hasKey . "apk") (hasKey . "cargo") (hasKey . "linuxCommand")) -}}
+brew {{ .name | quote }}
   {{- end }}
 {{ end -}}
 {{- range .packages.macos.brews -}}
 brew {{ . | quote }}
 {{ end -}}
-{{- if .physical_computer -}}
+{{- if eq .role "workstation" -}}
 {{- range .packages.macos.casks -}}
 cask {{ . | quote }}
 {{ end -}}

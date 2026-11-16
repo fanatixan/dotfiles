@@ -1,0 +1,108 @@
+#!/usr/bin/env sh
+# Renders the chezmoi source for every machine role and checks what each role
+# gets. Runs on macOS and Linux: the OS is faked with --override-data, so the
+# Linux scripts render on a Mac too. lookPath still sees the real machine, so
+# the package script is checked on the brew branch (brew must be installed).
+
+set -u
+
+repo=$(cd "$(dirname "$0")/.." && pwd)
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+failures=0
+
+fail() { echo "FAIL [$role/$os] $1"; failures=$((failures + 1)); }
+
+cz() {
+  chezmoi --source "$repo" --destination "$work/home" \
+    --config "$work/chezmoi.toml" --persistent-state "$work/state.boltdb" \
+    --cache "$work/cache" --override-data "{\"chezmoi\":{\"os\":\"$os\"}}" "$@"
+}
+
+use_role() {
+  role=$1
+  os=$2
+  printf '[data]\n  role = "%s"\n' "$role" >"$work/chezmoi.toml"
+  managed=$(cz managed --include files,scripts 2>&1)
+}
+
+render() { cz execute-template <"$repo/home/$1" 2>&1; }
+
+has_target() { echo "$managed" | grep -qx "$1" || fail "missing target $1"; }
+no_target() { echo "$managed" | grep -qE "^$1(/|$)" && fail "unexpected target $1"; }
+contains() { echo "$2" | grep -q -- "$3" || fail "$1 lacks '$3'"; }
+lacks() { echo "$2" | grep -q -- "$3" && fail "$1 has '$3'"; }
+empty() { [ -z "$(echo "$2" | tr -d '[:space:]')" ] || fail "$1 is not empty"; }
+
+linux_pkgs=run_onchange_before_10_linux_install_packages.sh.tmpl
+mac_pkgs=run_onchange_before_10_mac_install_packages.sh.tmpl
+cargo=run_once_before_00_linux_install_cargo.sh.tmpl
+zsh=dot_dotfiles/_zsh/run_once_before_00_install_zsh.sh.tmpl
+
+# --- config template: init writes the role it is given --------------------
+os=linux role=init
+cfg=$(chezmoi --source "$repo" execute-template --init \
+  --promptChoice "Machine role=worker" <"$repo/home/.chezmoi.toml.tmpl" 2>&1)
+contains "config" "$cfg" 'role = "worker"'
+
+# --- workstation (macOS) ----------------------------------------------------
+use_role workstation darwin
+has_target .ssh/config
+has_target .dotfiles/1password/rc.sh
+has_target .config/nvim/init.lua
+out=$(render "$mac_pkgs")
+contains "mac packages" "$out" 'cask "ghostty"'
+contains "mac packages" "$out" 'brew "jq"'
+contains "mac packages" "$out" 'brew "mosh"'
+out=$(render dot_gitconfig.tmpl)
+contains "gitconfig" "$out" 'signingkey = ssh-ed25519 AAAA'
+
+# --- worker (Citadel box, admin login) --------------------------------------
+use_role worker linux
+has_target .ssh/config
+has_target .config/nvim/init.lua
+has_target .dotfiles/_zsh/antidote/rc.zsh
+no_target .dotfiles/1password
+out=$(render "$linux_pkgs")
+for p in git ripgrep jq yq tmuxinator neovim direnv asdf git-delta; do
+  contains "linux packages" "$out" "brew install $p\$"
+done
+for p in mosh viddy; do lacks "linux packages" "$out" "install $p"; done
+empty "cargo script" "$(render "$cargo")"
+contains "zsh script" "$(render "$zsh")" 'zsh'
+out=$(render dot_gitconfig.tmpl)
+contains "gitconfig" "$out" 'signingkey = ssh-ed25519 AAAA'
+
+# --- agent (Citadel box, agent user) ----------------------------------------
+use_role agent linux
+has_target .gitconfig
+has_target .dotfiles/direnv/rc.zsh
+has_target .dotfiles/homebrew/paths
+has_target .dotfiles/ripgrep/.ripgreprc
+for t in .ssh .dotfiles/1password .config/nvim .config/tmuxinator \
+  .dotfiles/_zsh/antidote .dotfiles/_zsh/p10k .vim .p10k.zsh cheatsheets; do
+  no_target "$t"
+done
+lacks "linux packages" "$(render "$linux_pkgs")" 'install'
+empty "cargo script" "$(render "$cargo")"
+empty "zsh script" "$(render "$zsh")"
+out=$(render dot_gitconfig.tmpl)
+contains "gitconfig" "$out" 'signingkey = ~/.ssh/id_ed25519_signing.pub'
+lacks "gitconfig" "$out" 'AAAAC3'
+
+# --- container (dormant dev containers) -------------------------------------
+use_role container linux
+no_target .ssh
+no_target .dotfiles/1password
+contains "linux packages" "$(render "$linux_pkgs")" 'install mosh'
+contains "cargo script" "$(render "$cargo")" 'rustup'
+
+# --- static: the apk branch uses the apk name and no -y ---------------------
+role=static os=any
+grep -q 'apk add {{ .apk }}' "$repo/home/$linux_pkgs" ||
+  fail "apk branch must run 'apk add {{ .apk }}'"
+
+[ "$failures" -eq 0 ] && echo "OK: all role checks passed" || {
+  echo "$failures check(s) failed"
+  exit 1
+}
