@@ -1,8 +1,12 @@
 # reference: https://antidote.sh/#plugins-file
+# Every plugin is pinned to a commit (pin: needs antidote 2.0+); `antidote update`
+# skips pinned plugins. Bump them with scripts/bump-zsh-pins.sh.
 
 # first: it runs compinit, and queues the compdef calls of the plugins below
-marlonrichert/zsh-autocomplete
+marlonrichert/zsh-autocomplete pin:77706d4cf24866bf62b865d97e9ef7d8bc38bd6e
 
+# one pin for every ohmyzsh line below
+preset:ohmyzsh/ohmyzsh pin:c0140703a53eb0d22be44f7bac318d0baacc927c
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/fzf
 {{ if eq .role "workstation" -}}
@@ -19,12 +23,12 @@ ohmyzsh/ohmyzsh path:plugins/python
 ohmyzsh/ohmyzsh path:plugins/pip
 {{ end -}}
 
-zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-syntax-highlighting pin:e6683f20e5c38d3e5447f45845d04ddda75d0f23
 
-toku-sa-n/zsh-dot-up                 # navigate to parent with multiple dots
+toku-sa-n/zsh-dot-up pin:030403b9c2cb157f8c2693b99e2aa76570018e8e                # navigate to parent with multiple dots
 
-MichaelAquilina/zsh-you-should-use   # remind alias usage
+MichaelAquilina/zsh-you-should-use pin:5f3d129864ee4505043d88c3486224f1d75b692e  # remind alias usage
 
-akoenig/npm-run.plugin.zsh           # npm run autocomplete
+akoenig/npm-run.plugin.zsh pin:9f20c6653b5dfe1a1b169a95d27e4778253c7e30          # npm run autocomplete
 
-romkatv/powerlevel10k
+romkatv/powerlevel10k pin:64df59615df306c7a8bb37d0a5a1ebc46337dfb1

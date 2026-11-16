@@ -41,6 +41,7 @@ zsh=dot_dotfiles/_zsh/run_once_before_00_install_zsh.sh.tmpl
 tla=run_onchange_after_40_install_tlaplus.sh.tmpl
 rt=run_onchange_after_30_install_asdf_runtimes.sh.tmpl
 zplug=dot_dotfiles/_zsh/antidote/dot_zsh_plugins.txt.tmpl
+antidote_install=dot_dotfiles/_zsh/antidote/run_onchange_before_install.sh
 
 # --- config template: init writes the role it is given --------------------
 os=linux role=init
@@ -195,6 +196,22 @@ for f in $(grep -rlE "brew (install|bundle)" "$repo/home" "$repo/init.sh" | grep
   grep -v '^ *#' "$f" | grep -qE "brew (install|bundle)" || continue
   grep -q 'export HOMEBREW_NO_ASK=1' "$f" || fail "${f#$repo/} runs brew without HOMEBREW_NO_ASK=1"
 done
+
+# --- static: every zsh plugin and antidote itself are pinned to a commit -------
+role=workstation os=darwin
+printf '[data]\n  role = "workstation"\n' >"$work/chezmoi.toml"
+unpinned=$(render "$zplug" | awk '
+  /^[[:space:]]*(#|$)/ { next }
+  {
+    repo = $1; sub(/^preset:/, "", repo); pinned = 0
+    for (i = 2; i <= NF && $i !~ /^#/; i++)
+      if ($i ~ /^pin:[0-9a-f]+$/ && length($i) == 44) pinned = 1
+  }
+  $1 ~ /^preset:/ { if (pinned) preset[repo] = 1; next }
+  !pinned && !(repo in preset) { print repo }')
+[ -z "$unpinned" ] || fail "zsh plugins without a pin: $(echo $unpinned)"
+grep -qE '^antidote_sha=[0-9a-f]{40}$' "$repo/home/$antidote_install" ||
+  fail "antidote install script has no antidote_sha=<40-char SHA>"
 
 [ "$failures" -eq 0 ] && echo "OK: all role checks passed" || {
   echo "$failures check(s) failed"

@@ -12,6 +12,7 @@ on:
       - .chezmoiroot
       - init*.sh
       - tests/**
+      - scripts/**
       - .github/workflows/pipeline.yml
   pull_request:
     paths:
@@ -19,6 +20,7 @@ on:
       - .chezmoiroot
       - init*.sh
       - tests/**
+      - scripts/**
       - .github/workflows/pipeline.yml
   workflow_dispatch: {}
 
@@ -30,6 +32,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: brew install chezmoi bash
       - run: tests/roles.sh
+      - run: tests/bump.sh
       - run: tests/shells.sh
   # glibc collation (en_US.UTF-8) sorts _zsh after python; macOS doesn't
   verify-linux-shells:

@@ -72,6 +72,21 @@ and read by the agent, which is offline and can't install versions itself.
 `~/.tool-versions` of both users links to `/opt/asdf/tool-versions`. The asdf
 shims come from a `paths` file, so non-interactive shells get them too.
 
+## Zsh Plugins
+
+antidote loads the plugins of
+[`dot_zsh_plugins.txt.tmpl`](home/dot_dotfiles/_zsh/antidote/dot_zsh_plugins.txt.tmpl).
+Every plugin is pinned to a commit (`pin:`, or one `preset:` line for all
+ohmyzsh entries), and antidote itself to a release, so every machine runs the
+same code. `antidote update` skips pinned plugins.
+
+To update them:
+
+1. Run `scripts/bump-zsh-pins.sh`. It moves each pin to the plugin's current
+   upstream commit and antidote to its newest release, and prints what changed.
+2. Review `git diff`, then run `tests/roles.sh` and `tests/bump.sh`.
+3. Run `chezmoi apply`. The next zsh checks out the new pins.
+
 ## Usage
 
 The repo supports dev containers, local machines, and the Citadel box.
