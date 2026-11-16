@@ -66,10 +66,12 @@ contains "mac packages" "$out" 'mas "Numbers", id: 361304891'
 contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
 lacks "mac packages" "$out" 'brew "gradle"'
 out=$(render "$rt")
-contains "runtimes" "$out" 'asdf latest java temurin-25'
-contains "runtimes" "$out" 'asdf latest java corretto-8'
-contains "runtimes" "$out" 'asdf latest nodejs 26'
-contains "runtimes" "$out" 'asdf latest gradle'
+contains "runtimes" "$out" 'version=$(latest java temurin-25)'
+contains "runtimes" "$out" 'version=$(latest java corretto-8)'
+contains "runtimes" "$out" 'version=$(latest nodejs 26)'
+contains "runtimes" "$out" 'version=$(latest gradle)'
+# asdf latest prints its errors to stdout; a bare $(asdf latest) hides them (CI failure 2026-11-16)
+lacks "runtimes" "$out" 'version=$(asdf latest'
 contains "runtimes" "$out" 'uv python install --default 3.15'
 contains "runtimes" "$out" 'global="$HOME/.tool-versions"'
 no_target .tool-versions

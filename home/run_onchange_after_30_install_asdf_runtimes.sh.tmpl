@@ -29,10 +29,24 @@ set_global() {
   mv "$global.tmp" "$global"
 }
 
+# `asdf latest`, but loud: it prints its errors to stdout, which $(...) swallows.
+# Without a prefix, a plugin whose version list ends with an empty line (gradle)
+# finds "No compatible versions", so fall back to the last plain x.y.z release.
+latest() {
+  local v err
+  if err=$(asdf latest "$@"); then echo "$err"; return; fi
+  if [ $# -eq 1 ] && v=$(asdf list all "$1" | grep -E '^[0-9]+(\.[0-9]+)*$' | tail -1) && [ -n "$v" ]; then
+    echo "$v"
+    return
+  fi
+  echo "asdf latest $*: $err" >&2
+  return 1
+}
+
 {{ range $tool, $versions := .asdf -}}
 asdf plugin add {{ $tool }} >/dev/null 2>&1 || true
 {{ range $i, $line := $versions -}}
-version=$(asdf latest {{ $tool }}{{ if ne $line "latest" }} {{ $line }}{{ end }})
+version=$(latest {{ $tool }}{{ if ne $line "latest" }} {{ $line }}{{ end }})
 asdf install {{ $tool }} "$version"
 {{ if eq $i 0 }}set_global {{ $tool }} "$version"
 {{ end -}}
