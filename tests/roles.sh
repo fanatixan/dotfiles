@@ -44,7 +44,8 @@ zplug=dot_dotfiles/_zsh/antidote/dot_zsh_plugins.txt.tmpl
 
 # --- config template: init writes the role it is given --------------------
 os=linux role=init
-cfg=$(chezmoi --source "$repo" execute-template --init \
+: >"$work/empty.toml" # promptChoiceOnce keeps a role from the real config
+cfg=$(chezmoi --source "$repo" --config "$work/empty.toml" execute-template --init \
   --promptChoice "Machine role=worker" <"$repo/home/.chezmoi.toml.tmpl" 2>&1)
 contains "config" "$cfg" 'role = "worker"'
 
@@ -89,7 +90,7 @@ has_target .dotfiles/_zsh/antidote/rc.zsh
 no_target .dotfiles/1password
 out=$(render "$linux_pkgs")
 for p in git ripgrep jq yq tmuxinator neovim direnv asdf git-delta agda \
-  just watchexec pandoc; do
+  just watchexec pandoc unzip; do
   contains "linux packages" "$out" "brew install $p\$"
 done
 for p in mosh viddy gh act nomad cloudflared ghostty Xcode gradle maven; do
@@ -186,6 +187,12 @@ bad=$(yq -r '.packages[] | select(tag == "!!map") | select(has("mas") and (has("
 [ -z "$bad" ] || fail "mas entries without a name: $bad"
 grep -q 'apk add {{ .apk }}' "$repo/home/$linux_pkgs" ||
   fail "apk branch must run 'apk add {{ .apk }}'"
+
+# --- static: brew never asks (Homebrew 7 asks per package in a terminal) ----
+for f in $(grep -rlE "brew (install|bundle)" "$repo/home" "$repo/init.sh" | grep -v '/.chezmoidata/'); do
+  grep -v '^ *#' "$f" | grep -qE "brew (install|bundle)" || continue
+  grep -q 'export HOMEBREW_NO_ASK=1' "$f" || fail "${f#$repo/} runs brew without HOMEBREW_NO_ASK=1"
+done
 
 [ "$failures" -eq 0 ] && echo "OK: all role checks passed" || {
   echo "$failures check(s) failed"

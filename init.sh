@@ -3,6 +3,10 @@
 # exit on error
 set -e
 
+# no confirmation per package (Homebrew 7 asks by default in a terminal); the
+# chezmoi scripts set it too, for a later `chezmoi apply`
+export HOMEBREW_NO_ASK=1
+
 # target_env picks the machine role (see home/.chezmoi.toml.tmpl)
 case "${target_env:-}" in
   pc)        role=workstation;;

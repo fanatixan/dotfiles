@@ -20,6 +20,9 @@
 {{ if and (eq .chezmoi.os "linux") (ne .role "agent") -}}
 #!/usr/bin/env sh
 
+# no confirmation per package (Homebrew 7 asks by default in a terminal)
+export HOMEBREW_NO_ASK=1
+
 {{ $role := .role -}}
 
 {{ range .packages -}}

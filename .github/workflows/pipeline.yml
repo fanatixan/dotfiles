@@ -56,7 +56,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Ubuntu Server lacks tools the runner has; the install must bring its own
+      - run: sudo dpkg -r --force-depends unzip jq
       - run: target_env=worker DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
+      - run: test -x /home/linuxbrew/.linuxbrew/bin/unzip
       - run: test -f $HOME/.dotfiles/git/aliases
       - run: test ! -e $HOME/.dotfiles/1password
       - run: /home/linuxbrew/.linuxbrew/bin/jq --version

@@ -31,6 +31,7 @@ packages:
   - tmux
   - tmuxinator
   - { name: top-alternative, brew: bottom, apt: btop, apk: btop }
+  - { name: unzip, roles: [worker, container] }   # asdf-gradle needs it; macOS ships it
   - watchexec                                       # run commands on file changes
   - wget
   - yq                                              # yaml, json and csv processor

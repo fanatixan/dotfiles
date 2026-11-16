@@ -28,6 +28,9 @@
   {{ end -}}
 {{ end -}}
 
+# no confirmation per package (Homebrew 7 asks by default in a terminal)
+export HOMEBREW_NO_ASK=1
+
 brew_config_path=$HOME/.dotfiles/homebrew
 brewfile_path=$brew_config_path/Brewfile
 
