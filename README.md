@@ -60,6 +60,18 @@ Every machine has one role, asked once by
 - An existing config from before the roles still has `physical_computer`.
   Run `chezmoi init` once; the prompt suggests the matching role.
 
+## Runtimes
+
+[`home/.chezmoidata/runtimes.yaml`](home/.chezmoidata/runtimes.yaml) lists the
+language runtimes and build tools that asdf installs (Java, Node, Go, Gradle,
+Maven, uv, Yarn) and the Python versions that uv installs. The first version of
+each is the global default. The workstation and the worker install them.
+
+On the Citadel box they go into `/opt/asdf` and `/opt/uv`, owned by the worker
+and read by the agent, which is offline and can't install versions itself.
+`~/.tool-versions` of both users links to `/opt/asdf/tool-versions`. The asdf
+shims come from a `paths` file, so non-interactive shells get them too.
+
 ## Usage
 
 The repo supports dev containers, local machines, and the Citadel box.

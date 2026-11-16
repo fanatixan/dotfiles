@@ -1,0 +1,15 @@
+# Language runtimes and build tools through asdf, on the workstation and the
+# Citadel worker (the agent reads the worker's shared install in /opt/asdf).
+# Each tool lists version lines; the first is the global default, `latest`
+# means the newest release.
+asdf:
+  java: [temurin-25, temurin-21, temurin-17, temurin-11, corretto-8]  # no Temurin 8 for Apple Silicon
+  nodejs: ["26", "24", "22"]
+  golang: [latest]
+  gradle: [latest]
+  maven: [latest]
+  uv: [latest]
+  yarn: [latest]
+
+# Python through uv (prebuilt, no compiling); the first is the default.
+uvPython: ["3.15", "3.14", "3.13"]

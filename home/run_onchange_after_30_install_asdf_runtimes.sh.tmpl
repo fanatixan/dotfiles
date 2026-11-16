@@ -1,0 +1,44 @@
+{{- /* Installs the runtimes of .chezmoidata/runtimes.yaml. Reruns when they change,
+       because the rendered script changes. The agent installs nothing: it reads
+       the worker's shared /opt/asdf and /opt/uv. */ -}}
+{{ if has .role (list "workstation" "worker") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{ if eq .role "worker" -}}
+# Citadel: shared with the agent user, who reads but never installs
+export ASDF_DATA_DIR=/opt/asdf
+export UV_PYTHON_INSTALL_DIR=/opt/uv/python
+export UV_PYTHON_BIN_DIR=/opt/uv/bin
+sudo install -d -o "$(id -un)" -m 755 /opt/asdf /opt/uv
+global=/opt/asdf/tool-versions
+{{- else -}}
+global="$HOME/.tool-versions"
+{{- end }}
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+if ! command -v asdf >/dev/null 2>&1; then
+  echo "asdf not found, skipping the runtimes"
+  exit 0
+fi
+
+# like `asdf set -u`, but for any global file: replace the tool's line
+set_global() {
+  touch "$global"
+  { grep -v "^$1 " "$global" || true; echo "$1 $2"; } > "$global.tmp"
+  mv "$global.tmp" "$global"
+}
+
+{{ range $tool, $versions := .asdf -}}
+asdf plugin add {{ $tool }} >/dev/null 2>&1 || true
+{{ range $i, $line := $versions -}}
+version=$(asdf latest {{ $tool }}{{ if ne $line "latest" }} {{ $line }}{{ end }})
+asdf install {{ $tool }} "$version"
+{{ if eq $i 0 }}set_global {{ $tool }} "$version"
+{{ end -}}
+{{ end }}
+{{ end -}}
+{{ $default := index .uvPython 0 -}}
+uv python install{{ range .uvPython }} {{ . }}{{ end }}
+uv python install --default {{ $default }}
+{{ end -}}

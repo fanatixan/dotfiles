@@ -5,6 +5,12 @@
 .dotfiles/1password
 {{- end }}
 
+{{- if not (has .role (list "worker" "agent")) }}
+# Citadel only: ~/.tool-versions links to the shared /opt/asdf defaults;
+# elsewhere it stays the machine's own, unmanaged file
+.tool-versions
+{{- end }}
+
 {{- if or (eq .role "container") (eq .role "agent") }}
 # no SSH keys or host config in containers or for agents
 .ssh

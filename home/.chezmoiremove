@@ -3,4 +3,4 @@
 .oh-my-zsh/
 project/galvanize/.gitconfig
 .config/tmuxinator/*.yaml
-
+.dotfiles/asdf

@@ -59,6 +59,14 @@ jobs:
       - run: test -f $HOME/.dotfiles/git/aliases
       - run: test ! -e $HOME/.dotfiles/1password
       - run: /home/linuxbrew/.linuxbrew/bin/jq --version
+      # runtimes land in the shared /opt/asdf the agent user reads
+      - run: |
+          export ASDF_DATA_DIR=/opt/asdf PATH="/opt/asdf/shims:/opt/uv/bin:/home/linuxbrew/.linuxbrew/bin:$PATH"
+          cd /tmp
+          java -version
+          node --version
+          python --version
+          test -x /home/linuxbrew/.linuxbrew/bin/tlc
   verify-mac-installation:
     runs-on: macos-latest
     steps:

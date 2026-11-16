@@ -1,3 +1,12 @@
+# A paths file, so non-interactive shells (agents) get the shims too; the zz_
+# folder loads it last, so the shims come before Homebrew on PATH.
+{{- if has .role (list "worker" "agent") }}
+# Citadel: runtimes shared by the worker and agent users, installed by the worker
+export ASDF_DATA_DIR=/opt/asdf
+export UV_PYTHON_INSTALL_DIR=/opt/uv/python
+export UV_PYTHON_BIN_DIR=/opt/uv/bin
+export PATH="/opt/uv/bin:$PATH"
+{{- end }}
 asdf_data_dir=${ASDF_DATA_DIR:-$HOME/.asdf}
 
 if [ -d $asdf_data_dir ]; then

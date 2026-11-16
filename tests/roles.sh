@@ -23,7 +23,7 @@ use_role() {
   role=$1
   os=$2
   printf '[data]\n  role = "%s"\n' "$role" >"$work/chezmoi.toml"
-  managed=$(cz managed --include files,scripts 2>&1)
+  managed=$(cz managed --include files,scripts,symlinks 2>&1)
 }
 
 render() { cz execute-template <"$repo/home/$1" 2>&1; }
@@ -39,6 +39,8 @@ mac_pkgs=run_onchange_before_10_mac_install_packages.sh.tmpl
 cargo=run_once_before_00_linux_install_cargo.sh.tmpl
 zsh=dot_dotfiles/_zsh/run_once_before_00_install_zsh.sh.tmpl
 tla=run_onchange_after_40_install_tlaplus.sh.tmpl
+rt=run_onchange_after_30_install_asdf_runtimes.sh.tmpl
+zplug=dot_dotfiles/_zsh/antidote/dot_zsh_plugins.txt.tmpl
 
 # --- config template: init writes the role it is given --------------------
 os=linux role=init
@@ -62,6 +64,17 @@ contains "mac packages" "$out" 'brew "hashicorp/tap/nomad"'
 contains "mac packages" "$out" 'mas "Xcode", id: 497799835'
 contains "mac packages" "$out" 'mas "Numbers", id: 361304891'
 contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
+lacks "mac packages" "$out" 'brew "gradle"'
+out=$(render "$rt")
+contains "runtimes" "$out" 'asdf latest java temurin-25'
+contains "runtimes" "$out" 'asdf latest java corretto-8'
+contains "runtimes" "$out" 'asdf latest nodejs 26'
+contains "runtimes" "$out" 'asdf latest gradle'
+contains "runtimes" "$out" 'uv python install --default 3.15'
+contains "runtimes" "$out" 'global="$HOME/.tool-versions"'
+no_target .tool-versions
+contains "ghostty" "$(render dot_config/ghostty/config.tmpl)" 'ssh-terminfo'
+contains "zsh plugins" "$(render "$zplug")" 'plugins/gh'
 out=$(render dot_gitconfig.tmpl)
 contains "gitconfig" "$out" 'signingkey = ssh-ed25519 AAAA'
 
@@ -73,15 +86,26 @@ has_target .dotfiles/_zsh/antidote/rc.zsh
 no_target .dotfiles/1password
 out=$(render "$linux_pkgs")
 for p in git ripgrep jq yq tmuxinator neovim direnv asdf git-delta agda \
-  gradle maven just watchexec pandoc; do
+  just watchexec pandoc; do
   contains "linux packages" "$out" "brew install $p\$"
 done
-for p in mosh viddy gh act nomad cloudflared ghostty Xcode; do
+for p in mosh viddy gh act nomad cloudflared ghostty Xcode gradle maven; do
   lacks "linux packages" "$out" "$p"
 done
 contains "tla+ script" "$(render "$tla")" 'tla2tools.jar'
 empty "cargo script" "$(render "$cargo")"
 contains "zsh script" "$(render "$zsh")" 'zsh'
+out=$(render "$rt")
+contains "runtimes" "$out" 'export ASDF_DATA_DIR=/opt/asdf'
+contains "runtimes" "$out" 'global=/opt/asdf/tool-versions'
+has_target .tool-versions
+has_target .dotfiles/zz_asdf/paths
+contains "asdf paths" "$(render dot_dotfiles/zz_asdf/paths.tmpl)" 'ASDF_DATA_DIR=/opt/asdf'
+out=$(render "$zplug")
+contains "zsh plugins" "$out" 'plugins/mvn'
+for p in plugins/gh plugins/1password plugins/docker plugins/thefuck; do
+  lacks "zsh plugins" "$out" "$p"
+done
 out=$(render dot_gitconfig.tmpl)
 contains "gitconfig" "$out" 'signingkey = ssh-ed25519 AAAA'
 
@@ -97,6 +121,10 @@ for t in .ssh .dotfiles/1password .config/nvim .config/tmuxinator \
 done
 lacks "linux packages" "$(render "$linux_pkgs")" 'install'
 empty "tla+ script" "$(render "$tla")"
+empty "runtimes" "$(render "$rt")"
+has_target .tool-versions
+has_target .dotfiles/zz_asdf/paths
+contains "asdf paths" "$(render dot_dotfiles/zz_asdf/paths.tmpl)" 'ASDF_DATA_DIR=/opt/asdf'
 empty "cargo script" "$(render "$cargo")"
 empty "zsh script" "$(render "$zsh")"
 out=$(render dot_gitconfig.tmpl)
@@ -113,8 +141,8 @@ cz_nobrew() { PATH=/usr/bin:/bin "$chezmoi_bin" --source "$repo" \
   --override-data "{\"chezmoi\":{\"os\":\"$os\"}}" "$@"; }
 for r in agent worker; do
   use_role $r linux
-  managed=$(cz_nobrew managed --include files,scripts 2>&1)
-  has_target .dotfiles/asdf/before_rc.sh
+  managed=$(cz_nobrew managed --include files,scripts,symlinks 2>&1)
+  has_target .dotfiles/zz_asdf/paths
   contains "gitconfig (no brew on PATH)" \
     "$(cz_nobrew execute-template <"$repo/home/dot_gitconfig.tmpl" 2>&1)" 'filter "lfs"'
 done
