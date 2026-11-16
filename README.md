@@ -38,9 +38,32 @@ The solution relies on [`chezmoi`](https://www.chezmoi.io/).
   - Install Java, NodeJS, and Python with [`asdf`](https://asdf-vm.com/)
   - Configure SSH with public keys and [1Password](https://1password.com/)
 
+## Machine Roles
+
+Every machine has one role, asked once by
+[`home/.chezmoi.toml.tmpl`](home/.chezmoi.toml.tmpl) and kept in
+`~/.config/chezmoi/chezmoi.toml`. Templates branch on `.role` and on
+`.chezmoi.os`.
+
+| Role          | Machine                          | Packages                    | Secrets                  |
+| ------------- | -------------------------------- | --------------------------- | ------------------------ |
+| `workstation` | Mac                              | all, plus casks and apps    | SSH keys, 1Password      |
+| `worker`      | Citadel box, admin login         | lean CLI set (shared brew)  | SSH config, no 1Password |
+| `agent`       | Citadel box, agent user          | none, uses the worker brew  | none                     |
+| `container`   | dev container (dormant)          | CLI set, cargo fallback     | none                     |
+
+- [`home/.chezmoiignore`](home/.chezmoiignore) holds the role-based exclusions.
+- A package in [`packages.yaml`](home/.chezmoidata/packages.yaml) can narrow
+  its roles with `roles: [...]`.
+- The agent role is offline and non-interactive: tool config only, no
+  installers, no prompt or editor extras. Its git commits sign with the box
+  key `~/.ssh/id_ed25519_signing.pub`.
+- An existing config from before the roles still has `physical_computer`.
+  Run `chezmoi init` once; the prompt suggests the matching role.
+
 ## Usage
 
-The repo supports both dev containers and local machines.
+The repo supports dev containers, local machines, and the Citadel box.
 
 ### Dev Containers
 
@@ -58,6 +81,23 @@ For a local machine, run the following command in a terminal:
 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-pc.sh)"
+```
+
+### Citadel Box
+
+For the admin login on the box (installs Homebrew and the lean package set):
+
+```sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-worker.sh)"
+```
+
+The agent user is offline, so the admin login applies the agent role from a
+local clone that the agent user can read:
+
+```sh
+sudo -u agent -H chezmoi init --source /path/to/dotfiles --promptChoice "Machine role=agent" --apply
+# later updates: pull the clone as the admin login, then
+sudo -u agent -H chezmoi --source /path/to/dotfiles apply
 ```
 
 ## Folder Structure
