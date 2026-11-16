@@ -10,31 +10,55 @@ on:
     paths:
       - home/**
       - .chezmoiroot
+      - init*.sh
+      - tests/**
+      - .github/workflows/pipeline.yml
   pull_request:
     paths:
       - home/**
       - .chezmoiroot
+      - init*.sh
+      - tests/**
+      - .github/workflows/pipeline.yml
   workflow_dispatch: {}
 
+# Every job applies the checked-out commit (DOTFILES_SOURCE), not GitHub main.
 jobs:
+  verify-roles:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install chezmoi
+      - run: tests/roles.sh
   verify-alpine-installation:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: jirutka/setup-alpine@v1
         with:
           branch: v3.15
-      - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
+      - run: target_env=container DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
       - run: test -f $HOME/.dotfiles/git/aliases
       # - run: eza
   verify-ubuntu-installation:
     runs-on: ubuntu-latest
     steps:
-      - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
+      - uses: actions/checkout@v4
+      - run: target_env=container DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
       - run: test -f $HOME/.dotfiles/git/aliases
       # - run: eza
+  verify-ubuntu-worker-installation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: target_env=worker DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
+      - run: test -f $HOME/.dotfiles/git/aliases
+      - run: test ! -e $HOME/.dotfiles/1password
+      - run: /home/linuxbrew/.linuxbrew/bin/jq --version
   verify-mac-installation:
     runs-on: macos-latest
     steps:
-      - run: sh -c "$(curl -fsSL https://raw.githubusercontent.com/fanatixan/dotfiles/refs/heads/main/init-container.sh)"
+      - uses: actions/checkout@v4
+      - run: target_env=container DOTFILES_SOURCE="$GITHUB_WORKSPACE" sh init.sh
       - run: test -f $HOME/.dotfiles/git/aliases
       # - run: eza

@@ -3,10 +3,16 @@
 # exit on error
 set -e
 
-physical_computer=false
-if [ "$target_env" = "pc" ] ; then
-  physical_computer=true
-fi
+# target_env picks the machine role (see home/.chezmoi.toml.tmpl)
+case "${target_env:-}" in
+  pc)        role=workstation;;
+  worker)    role=worker;;
+  container) role=container;;
+  *)         >&2 echo "💀 Unknown target_env: '${target_env:-}' (pc, worker, container)"; exit 1;;
+esac
+
+# DOTFILES_SOURCE: a local checkout to apply instead of the GitHub repo (CI)
+dotfiles_source="${DOTFILES_SOURCE:-}"
 
 info() {
   echo "ℹ️ $1"
@@ -19,6 +25,10 @@ ok() {
 halt() {
   >&2 echo "💀 $1"
   exit 1
+}
+
+as_root() {
+  if [ "$(id -u)" = "0" ]; then "$@"; else sudo "$@"; fi
 }
 
 platform_type() {
@@ -62,7 +72,7 @@ try_install_git() {
     fi
     
     if [ "$platform" = "Linux" ]; then
-      apt-get install -y git && ok "git installed successfully" || halt "Failed to install git"
+      as_root apt-get install -y git && ok "git installed successfully" || halt "Failed to install git"
     fi
   fi
 }
@@ -120,24 +130,22 @@ install_chezmoi() {
   brew install chezmoi || install_chezmoi_binary && export PATH=$PATH:$HOME/bin
 }
 
-init_chezmoi_config() {
-  info "Adding chezmoi config"
-  mkdir -p $HOME/.config/chezmoi
-  cat > $HOME/.config/chezmoi/chezmoi.toml << EOF
-[onepassword]
-  prompt = false
-[data]
-  physical_computer = $physical_computer
-
-EOF
+init_chezmoi() {
+  info "Initializing chezmoi as role '$role'"
+  if [ -n "$dotfiles_source" ]; then
+    mkdir -p "$HOME/.local/share"
+    ln -sfn "$dotfiles_source" "$HOME/.local/share/chezmoi"
+    chezmoi init --promptChoice "Machine role=$role"
+  else
+    chezmoi init --promptChoice "Machine role=$role" fanatixan
+  fi
 }
 
 check_platform
 try_install_git
 try_install_brew
 install_chezmoi
-init_chezmoi_config
-chezmoi init fanatixan
+init_chezmoi
 chezmoi doctor
 chezmoi apply
-chezmoi update
+[ -n "$dotfiles_source" ] || chezmoi update
