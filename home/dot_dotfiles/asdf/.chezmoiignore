@@ -1,3 +1,4 @@
-{{ if not (lookPath "asdf") -}}
+{{- /* worker and agent get asdf from the shared brew, even when it isn't on chezmoi's PATH (sudo secure_path) */ -}}
+{{ if not (or (lookPath "asdf") (has .role (list "worker" "agent"))) -}}
 *
 {{- end }}

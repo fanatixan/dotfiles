@@ -90,6 +90,22 @@ out=$(render dot_gitconfig.tmpl)
 contains "gitconfig" "$out" 'signingkey = ~/.ssh/id_ed25519_signing.pub'
 lacks "gitconfig" "$out" 'AAAAC3'
 
+# --- agent applied through sudo: secure_path hides linuxbrew -----------------
+# worker and agent always have asdf and git-lfs from the shared brew, so the
+# result must not depend on the PATH of whoever runs chezmoi.
+chezmoi_bin=$(command -v chezmoi)
+cz_nobrew() { PATH=/usr/bin:/bin "$chezmoi_bin" --source "$repo" \
+  --destination "$work/home" --config "$work/chezmoi.toml" \
+  --persistent-state "$work/state.boltdb" --cache "$work/cache" \
+  --override-data "{\"chezmoi\":{\"os\":\"$os\"}}" "$@"; }
+for r in agent worker; do
+  use_role $r linux
+  managed=$(cz_nobrew managed --include files,scripts 2>&1)
+  has_target .dotfiles/asdf/before_rc.sh
+  contains "gitconfig (no brew on PATH)" \
+    "$(cz_nobrew execute-template <"$repo/home/dot_gitconfig.tmpl" 2>&1)" 'filter "lfs"'
+done
+
 # --- container (dormant dev containers) -------------------------------------
 use_role container linux
 no_target .ssh

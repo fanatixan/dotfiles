@@ -54,7 +54,7 @@
 [includeIf "hasconfig:remote.*.url:git@git.toptal.com:*/**"]
 	path = ~/.dotfiles/git/hosts/git.toptal.com.gitconfig
 
-{{ if (lookPath "git-lfs") -}}
+{{ if or (lookPath "git-lfs") (has .role (list "worker" "agent")) -}}
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
