@@ -20,7 +20,8 @@
 
 {{- if or (eq .role "container") (eq .role "agent") }}
 # no SSH keys or host config in containers or for agents
-.ssh
+.ssh/*
+!.ssh/allowed_signers
 {{- end }}
 
 {{- if eq .role "agent" }}
